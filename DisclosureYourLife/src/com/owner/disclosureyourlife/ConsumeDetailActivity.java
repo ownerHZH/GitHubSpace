@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.owner.adapter.CatalogSpinnerAdapter;
+import com.owner.adapter.ConsumeAndIncomeAdapter.ViewHolder;
 import com.owner.constant.AppConstants;
 import com.owner.domain.Consume;
+import com.owner.domain.ConsumeComment;
 import com.owner.domain.JsonEntity;
 import com.owner.httpgson.HttpAndroidTask;
 import com.owner.httpgson.HttpClientService;
@@ -16,21 +18,26 @@ import com.owner.tools.GsonUtil;
 import com.owner.tools.MyProgressDialog;
 import com.owner.tools.Utils;
 
+import android.R.integer;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,10 +54,17 @@ public class ConsumeDetailActivity extends Activity {
 	private Button submit;//提交按钮
     private ViewStub viewStub;
     private CatalogSpinnerAdapter catalogAdapter;
-    
     private TextView clauses;
     private TextView money;
     private MyProgressDialog pdialog;
+    
+    private Button leaveANoteButton;    //评论按钮
+    private ListView leaveANoteListView;//评论显示列表
+    private EditText leaveANoteEditText;//评论信息输入框
+    private boolean isWriteNote=true;//初始化点击就是写信息
+    private List<ConsumeComment> consumeCommentList;
+    private ConsumeCommentAdapter consumeCommentAdapter;
+    private int cid=0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,12 +85,24 @@ public class ConsumeDetailActivity extends Activity {
 			title.setText(getString(R.string.consume_detail));
 			viewStub=(ViewStub) findViewById(R.id.consumeDetailLayout);
 			viewStub.inflate();
-			
+			cid=data.getCid();//这个详细页面所显示的数据id号
 			clauses=(TextView) findViewById(R.id.clauses);
 			money=(TextView) findViewById(R.id.money);
 			
 			clauses.setText(data.getName());
 			money.setText("  "+data.getMoney()+"  ");
+			leaveANoteButton=(Button) findViewById(R.id.leave_a_note);
+			leaveANoteButton.setOnClickListener(l);
+			leaveANoteListView=(ListView) findViewById(R.id.leave_a_note_listView);
+			leaveANoteEditText=(EditText) findViewById(R.id.noteEditText);
+			leaveANoteEditText.setVisibility(View.GONE);
+			//列表显示信息
+			consumeCommentList=new ArrayList<ConsumeComment>();
+			consumeCommentAdapter=new ConsumeCommentAdapter(consumeCommentList);
+			leaveANoteListView.setAdapter(consumeCommentAdapter);
+			//为了让ScrollView里面的List显示完整
+			Utils.setListViewHeightBasedOnChildren(leaveANoteListView);
+			
 		}else {//上传自己的页面显示
 			viewStub=(ViewStub) findViewById(R.id.uploadLayout);
 			viewStub.inflate();
@@ -139,11 +165,45 @@ public class ConsumeDetailActivity extends Activity {
 					upLoadData();
 				}			
 				break;
+			case R.id.leave_a_note:
+				//评论点击按钮实现函数
+				leaveANote();
+				break;
 			default:
 				break;
 			}
-		}
+		}		
 	};
+	
+	//评论点击按钮实现函数
+	private void leaveANote() {
+		if(isWriteNote)
+		{
+			//第一次点击就是写信息 编辑框出现
+			leaveANoteEditText.setVisibility(View.VISIBLE);
+			isWriteNote=false;
+			leaveANoteButton.setText(R.string.consume_detail_leave_a_note_button_button);
+		}else {
+			//不写的时候就是提交写的数据 同时隐藏编辑框
+			String sNoteString=leaveANoteEditText.getText().toString();			
+			isWriteNote=true;
+			leaveANoteEditText.setText("");
+			leaveANoteButton.setText(R.string.consume_detail_leave_a_note_button);
+			leaveANoteEditText.setVisibility(View.GONE);
+			if(sNoteString!=null&&sNoteString!=""&&!sNoteString.equals(null)&&!sNoteString.equals(""))
+			{
+				ConsumeComment cc=new ConsumeComment();
+				cc.setCid(cid);
+				cc.setComment(sNoteString);
+				consumeCommentList.add(cc);
+				consumeCommentAdapter.notifyDataSetChanged();
+				//为了让ScrollView里面的List显示完整
+				Utils.setListViewHeightBasedOnChildren(leaveANoteListView);
+				//这个评论信息的保存到数据库也在这里
+			}
+			
+		}
+	}
 	
 	//点击确定按钮上传字段
 	public void upLoadData()
@@ -217,6 +277,87 @@ public class ConsumeDetailActivity extends Activity {
 		}
 	}
 
+	//评论列表显示数据的adapter
+	private final class ConsumeCommentAdapter extends BaseAdapter
+	{
+		private LayoutInflater inflater;
+		private List<ConsumeComment> cclist;
+		
+		/**
+		 * 构造函数
+		 * @param context
+		 */
+		public ConsumeCommentAdapter(List<ConsumeComment> cclist)
+		{
+			inflater=LayoutInflater.from(context);
+			this.cclist=cclist;
+		}
+		
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return cclist.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			// TODO Auto-generated method stub
+			return cclist.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			// TODO Auto-generated method stub
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			 ViewHolder holder;        
+	         if (convertView == null) {
+	        	 
+		          convertView = inflater.inflate(R.layout.simple_list_item_comment,null);	
+		          holder = new ViewHolder();
+		          
+		         /*获取Item组件*/                    
+		         holder.title = (TextView) convertView.findViewById(R.id.itemTitle);
+		         
+		         convertView.setTag(holder);//给holder设置tag                   
+	         }
+	         else
+	         {
+	             holder = (ViewHolder)convertView.getTag();//获取holder                
+	         }
+
+	         /*Item组件赋值*/            
+	         holder.title.setText(cclist.get(position).getComment());
+	         
+	         /**
+	          * 给Item附上样式
+	          */
+	         if (cclist.size() == 1) {
+	             convertView.setBackgroundResource(R.drawable.circle_list_single);
+	         } else if (cclist.size() > 1) {
+	             if (position == 0) {
+	                 convertView.setBackgroundResource(R.drawable.circle_list_top);
+	             } else if (position == (cclist.size() - 1)) {
+	                 convertView.setBackgroundResource(R.drawable.circle_list_bottom);
+	             } else {
+	                 convertView.setBackgroundResource(R.drawable.circle_list_middle);
+	             }
+	         }
+	           
+	         return convertView;
+	       }
+		
+		/**
+		 * 组件内部类
+		 * */
+		public final class ViewHolder{
+			public TextView title;   //列表显示的单项
+		}
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

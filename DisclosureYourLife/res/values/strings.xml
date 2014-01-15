@@ -38,6 +38,8 @@
     <!-- 消费界面的字段 -->
     <string name="consume_title">晒自己的消费</string>
     <string name="consume_detail">消费详细</string>
+    <string name="consume_detail_leave_a_note_button">我来说一句</string>
+    <string name="consume_detail_leave_a_note_button_button">我       说</string>
     <string name="consume_detail_unit_char">￥</string>
     <string name="consume_detail_unit">元</string>
     

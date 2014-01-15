@@ -143,7 +143,7 @@ public class AndroidService extends ActionSupport implements ServletRequestAware
     {
 		int eid=0;//插入返回的主键ID
 		final String path =ServletActionContext.getServletContext().getRealPath("/");
-		final String spath="http://192.168.1.150:8080/DisclosureYourLife/";// 图片所在服务器的路径
+		final String spath="http://192.168.0.104:8080/DisclosureYourLife/";// 图片所在服务器的路径
 		
 		List<Picture> pics=new ArrayList<Picture>();//保存上传图片的路径
 		Embarrass em=GsonTool.getGson().fromJson(embarrass,GsonTool.type_embarrass);
