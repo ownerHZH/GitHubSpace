@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.owner.domain.EmbarrassMapper">  
+  
+    <select id="selectEmbarrass" parameterType="java.lang.String"  
+        resultType="Embarrass">  
+        select 
+            EID as eid, 
+	        UID as uid,
+	        ETitle as etitle,
+	        EDesc as edesc,
+	        EPic as epic
+        from embarrass where EID = #{eid}  
+    </select>  
+    <select id="selectAll" resultType="Embarrass">  
+        select
+            EID as eid, 
+	        UID as uid,
+	        ETitle as etitle,
+	        EDesc as edesc,
+	        EPic as epic
+         from embarrass ORDER BY EID DESC
+         limit #{pageno,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+    </select>  
+    <select id="selectEmbarrassByUid" resultType="Embarrass" parameterType="String">  
+        select 
+            EID as eid, 
+	        UID as uid,
+	        ETitle as etitle,
+	        EDesc as edesc,
+	        EPic as epic
+        from embarrass where UID like #{uid}  
+    </select>  
+    
+    <insert id="insertEmbarrass" useGeneratedKeys="true" parameterType="Embarrass" keyProperty="eid" >         
+        insert into Embarrass(UID,ETitle,EDesc,EPic)  
+        values(#{uid,jdbcType=INTEGER},
+        #{etitle,jdbcType=VARCHAR},
+        #{edesc,jdbcType=VARCHAR},
+        #{epic,jdbcType=VARCHAR})         
+    </insert>
+    
+    <insert id="insertEmbarrassBatch" parameterType="Embarrass">  
+        insert into embarrass(UID,ETitle,EDesc,EPic)  
+        values
+          <foreach collection="embarrasses" item="item" index="index" separator=",">
+               (#{item.uid,jdbcType=INTEGER},
+               #{item.etitle,jdbcType=VARCHAR},
+               #{item.edesc,jdbcType=VARCHAR},
+               #{item.epic,jdbcType=VARCHAR})
+          </foreach> 
+    </insert>
+      
+    <update id="updateEmbarrass" parameterType="Embarrass">  
+        update Embarrass set UID=#{uid},ETitle=#{etitle},EDesc=#{edesc},EPic=#{epic}  
+        where eid=#{eid}  
+    </update>  
+</mapper>  
+

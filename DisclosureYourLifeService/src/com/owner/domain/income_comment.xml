@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.owner.domain.IncomeCommentMapper">  
+ 
+    <select id="selectAll" resultType="IncomeComment">  
+        select
+            id as id, 
+	        iid as iid,
+	        comment as comment
+         from income_comment ORDER BY id DESC
+           limit #{pageno,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+    </select>  
+     
+    <insert id="insertIncomeComment" parameterType="IncomeComment" keyProperty="id" useGeneratedKeys="true">         
+        insert into consume_comment(iid,comment)  
+        values(#{iid,jdbcType=INTEGER},#{comment,jdbcType=VARCHAR})        
+    </insert>   
+    
+</mapper>  
+

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-config.dtd">
+<configuration>
+    <typeAliases>  
+        <typeAlias type="com.owner.domain.Consume" alias="Consume"/>  
+        <typeAlias type="com.owner.domain.Income" alias="Income"/>
+        <typeAlias type="com.owner.domain.Embarrass" alias="Embarrass"/>
+        <typeAlias type="com.owner.domain.Picture" alias="Picture"/>
+        <typeAlias type="com.owner.domain.User" alias="User"/>
+        
+        <typeAlias type="com.owner.domain.ConsumeComment" alias="ConsumeComment"/>  
+        <typeAlias type="com.owner.domain.IncomeComment" alias="IncomeComment"/>
+        <typeAlias type="com.owner.domain.EmbarrassComment" alias="EmbarrassComment"/>
+    </typeAliases>
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.jdbc.Driver" />
+				<property name="url" value="jdbc:mysql://localhost:3306/disclosure_life?useUnicode=true&amp;characterEncoding=UTF-8" />
+				<property name="username" value="root" />
+				<property name="password" value="root" />
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="com/owner/domain/consume.xml" />
+		<mapper resource="com/owner/domain/income.xml" />
+		<mapper resource="com/owner/domain/embarrass.xml" />
+		<mapper resource="com/owner/domain/picture.xml" />
+		<mapper resource="com/owner/domain/user.xml" />
+		
+		<mapper resource="com/owner/domain/consume_comment.xml" />
+		<mapper resource="com/owner/domain/income_comment.xml" />
+		<mapper resource="com/owner/domain/embarrass_comment.xml" />
+	</mappers>
+</configuration>

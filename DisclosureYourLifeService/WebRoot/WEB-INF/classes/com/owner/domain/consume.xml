@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.owner.domain.ConsumeMapper">  
+  
+    <select id="selectConsume" parameterType="java.lang.String"  
+        resultType="Consume">  
+        select 
+            CID as cid, 
+	        UID as uid,
+	        CName as name,
+	        CMoney as money
+        from consume where CID = #{cid}  
+    </select>  
+    <select id="selectAll" resultType="Consume">  
+        select
+            CID as cid, 
+	        UID as uid,
+	        CName as name,
+	        CMoney as money 
+         from consume ORDER BY CID DESC
+           limit #{pageno,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+    </select>  
+    <select id="selectPersonsByUid" resultType="Consume" parameterType="String">  
+        select 
+            CID as cid, 
+	        UID as uid,
+	        CName as name,
+	        CMoney as money
+        from consume where UID like #{uid}  
+    </select>  
+    <insert id="insertConsume" parameterType="Consume" keyProperty="CID" useGeneratedKeys="true">         
+        insert into Consume(UID,CName,CMoney)  
+        values(#{uid},#{name},#{money})
+        <selectKey keyProperty="CID" resultType="int" order="AFTER">
+           SELECT LAST_INSERT_ID() AS cid;
+        </selectKey>         
+    </insert> 
+    
+    <insert id="insertConsumeBatch" parameterType="Consume">  
+        insert into Consume(UID,CName,CMoney)  
+        values
+          <foreach collection="consumes" item="item" index="index" separator=",">
+               (#{item.uid},#{item.name},#{item.money})
+          </foreach> 
+    </insert> 
+    
+    <update id="updateConsume" parameterType="Consume">  
+        update consume set UID=#{uid},CName=#{name},CMoney=#{noney}  
+        where CID=#{cid}  
+    </update>  
+</mapper>  
+

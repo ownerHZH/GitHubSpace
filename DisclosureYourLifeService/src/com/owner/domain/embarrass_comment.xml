@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.owner.domain.EmbarrassCommentMapper">  
+ 
+    <select id="selectAll" resultType="EmbarrassComment">  
+        select
+            id as id, 
+	        eid as eid,
+	        comment as comment
+         from embarrass_comment ORDER BY id DESC
+           limit #{pageno,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+    </select>  
+     
+    <insert id="insertEmbarrassComment" parameterType="EmbarrassComment" keyProperty="id" useGeneratedKeys="true">         
+        insert into embarrass_comment(eid,comment)  
+        values(#{eid,jdbcType=INTEGER},#{comment,jdbcType=VARCHAR})        
+    </insert>   
+    
+</mapper>  
+

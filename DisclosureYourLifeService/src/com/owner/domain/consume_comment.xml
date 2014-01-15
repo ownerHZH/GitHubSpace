@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.owner.domain.ConsumeCommentMapper">  
+ 
+    <select id="selectAll" resultType="ConsumeComment">  
+        select
+            id as id, 
+	        cid as cid,
+	        comment as comment
+         from consume_comment ORDER BY id DESC
+           limit #{pageno,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+    </select>  
+     
+    <insert id="insertConsumeComment" parameterType="ConsumeComment" keyProperty="id" useGeneratedKeys="true">         
+        insert into consume_comment(cid,comment)  
+        values(#{cid,jdbcType=INTEGER},#{comment,jdbcType=VARCHAR})        
+    </insert>   
+    
+</mapper>  
+

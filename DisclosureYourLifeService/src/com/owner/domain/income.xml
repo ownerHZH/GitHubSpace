@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.owner.domain.IncomeMapper">  
+  
+    <select id="selectIncome" parameterType="java.lang.String"  
+        resultType="Income">  
+        select 
+            IID as iid, 
+	        UID as uid,
+	        IName as name,
+	        IMoney as money
+        from Income where IID = #{iid}  
+    </select>  
+    <select id="selectAll" resultType="Income">  
+        select
+            IID as iid, 
+	        UID as uid,
+	        IName as name,
+	        IMoney as money
+         from income ORDER BY IID desc 
+           limit #{pageno,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+    </select>  
+    <select id="selectIncomeByUid" resultType="Income" parameterType="String">  
+        select 
+            IID as iid, 
+	        UID as uid,
+	        IName as name,
+	        IMoney as money
+        from income where UID like #{uid}  
+    </select>  
+    
+    <insert id="insertIncome" parameterType="Income">  
+        insert into Income(UID,IName,IMoney)  
+        values(#{uid},#{name},#{money})
+        <selectKey keyProperty="IID" resultType="int" order="AFTER">
+           SELECT LAST_INSERT_ID() AS iid;
+        </selectKey>         
+    </insert> 
+    
+    <insert id="insertIncomeBatch" parameterType="Income">  
+        insert into income(UID,IName,IMoney)  
+        values
+          <foreach collection="incomes" item="item" index="index" separator=",">
+               (#{item.uid},#{item.name},#{item.money})
+          </foreach> 
+    </insert>
+    
+    <update id="updateIncome" parameterType="Income">  
+        update income set uid=#{uid},name=#{name},money=#{noney}  
+        where iid=#{iid}  
+    </update>  
+</mapper>  
+

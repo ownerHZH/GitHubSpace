@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.owner.domain.PictureMapper">  
+    <select id="selectPicture" parameterType="java.lang.String"  
+        resultType="Picture">  
+        select 
+            PID as pid, 
+	        EID as eid,
+	        PPath as ppath,
+	        PName as pname,
+	        PPic as ppic
+        from Picture where PID = #{pid}  
+    </select>  
+    <select id="selectAll" resultType="Picture">  
+        select
+            PID as pid, 
+	        EID as eid,
+	        PPath as ppath,
+	        PName as pname,
+	        PPic as ppic
+         from Picture  
+    </select>  
+    <select id="selectPictureByEid" resultType="Picture" parameterType="String">  
+        select 
+            PID as pid, 
+	        EID as eid,
+	        PPath as ppath,
+	        PName as pname,
+	        PPic as ppic
+        from Picture where EID = #{eid}  
+    </select>  
+    
+    <insert id="insertPicture" parameterType="Picture">  
+        insert into Picture(EID,PPath,PName,PPic)  
+        values(
+	        #{eid,jdbcType=INTEGER},
+	        #{ppath,jdbcType=VARCHAR},
+	        #{pname,jdbcType=VARCHAR},
+	        #{ppic,jdbcType=VARCHAR})
+        <selectKey keyProperty="PID" resultType="int" order="AFTER">
+           SELECT LAST_INSERT_ID() AS pid;
+        </selectKey>         
+    </insert> 
+    
+    <insert id="insertPictureBatch" parameterType="Picture">  
+        insert into picture(EID,PPath,PName,PPic)  
+        values
+          <foreach collection="pictures" item="item" index="index" separator=",">
+               (#{item.eid,jdbcType=INTEGER},
+               #{item.ppath,jdbcType=VARCHAR},
+               #{item.pname,jdbcType=VARCHAR},
+               #{item.ppic,jdbcType=VARCHAR})
+          </foreach> 
+    </insert>
+    
+    <update id="updatePicture" parameterType="Picture">  
+        update Picture set EID=#{eid},PName=#{pname},PPath=#{ppath},PPic=#{ppic}  
+        where PID=#{pid}  
+    </update>  
+</mapper>  
+

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:gravity="top|center"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/embarrassDetailTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/title_hint" >
+        </EditText>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:text="@string/describe"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/embarrassEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="top|center_vertical"
+        android:hint="@string/describe_hint"
+        android:inputType="textMultiLine"
+        android:minLines="5"
+        android:overScrollMode="ifContentScrolls" />
+
+    <Button
+        android:id="@+id/uploadPicButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/upload_pic" />
+    
+    <HorizontalScrollView
+             android:id="@+id/horizontalScrollView1"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginBottom="8dp" >
+
+             <LinearLayout
+                 android:id="@+id/linear_uploads"
+                 android:layout_width="fill_parent"
+                 android:layout_height="match_parent"
+                 android:orientation="horizontal" >
+             </LinearLayout>
+         </HorizontalScrollView>
+
+    <Button
+        android:id="@+id/embarrassMakeSureButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/makesure" />
+
+</LinearLayout>
