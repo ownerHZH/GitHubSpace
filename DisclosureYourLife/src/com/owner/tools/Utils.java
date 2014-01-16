@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.owner.disclosureyourlife.R;
 
-import android.R.integer;
 import android.content.Context;
 import android.text.method.DigitsKeyListener;
 import android.view.Gravity;

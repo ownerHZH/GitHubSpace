@@ -20,7 +20,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         values(
         #{eid,jdbcType=INTEGER},
         #{comment,jdbcType=VARCHAR},
-        #{comment,jdbcType=TIMESTAMP})        
+        #{date,jdbcType=TIMESTAMP})        
     </insert>   
     
 </mapper>  

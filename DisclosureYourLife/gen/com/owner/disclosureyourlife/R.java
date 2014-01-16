@@ -83,86 +83,93 @@ containing a value of this type.
         public static final int onebit_32=0x7f02001b;
         public static final int orbz_sun=0x7f02001c;
         public static final int popup_window=0x7f02001d;
-        public static final int progress_1=0x7f02001e;
-        public static final int progress_2=0x7f02001f;
-        public static final int progress_3=0x7f020020;
-        public static final int progress_4=0x7f020021;
-        public static final int progress_5=0x7f020022;
-        public static final int progress_6=0x7f020023;
-        public static final int progress_7=0x7f020024;
-        public static final int progress_8=0x7f020025;
-        public static final int selected=0x7f020026;
-        public static final int spread_striction=0x7f020027;
-        public static final int spread_y=0x7f020028;
-        public static final int striction_y=0x7f020029;
-        public static final int text_while=0x7f02002a;
-        public static final int top_bg=0x7f02002b;
-        public static final int upload_layout_background=0x7f02002c;
-        public static final int uu_bg=0x7f02002d;
-        public static final int xlistview_arrow=0x7f02002e;
+        public static final int popup_window_add_item=0x7f02001e;
+        public static final int popwindow_bg=0x7f02001f;
+        public static final int progress_1=0x7f020020;
+        public static final int progress_2=0x7f020021;
+        public static final int progress_3=0x7f020022;
+        public static final int progress_4=0x7f020023;
+        public static final int progress_5=0x7f020024;
+        public static final int progress_6=0x7f020025;
+        public static final int progress_7=0x7f020026;
+        public static final int progress_8=0x7f020027;
+        public static final int selected=0x7f020028;
+        public static final int spread_striction=0x7f020029;
+        public static final int spread_y=0x7f02002a;
+        public static final int striction_y=0x7f02002b;
+        public static final int text_while=0x7f02002c;
+        public static final int top_bg=0x7f02002d;
+        public static final int upload_layout_background=0x7f02002e;
+        public static final int uu_bg=0x7f02002f;
+        public static final int xlistview_arrow=0x7f020030;
     }
     public static final class id {
-        public static final int action_settings=0x7f09003c;
+        public static final int action_settings=0x7f090041;
+        public static final int add_item_button_cancel=0x7f09001a;
+        public static final int add_item_button_ok=0x7f090019;
+        public static final int add_item_name_editText=0x7f090017;
+        public static final int add_item_number_editText=0x7f090018;
         public static final int back=0x7f09000d;
-        public static final int cancelButton=0x7f09002f;
-        public static final int catalogspinner=0x7f090016;
+        public static final int cancelButton=0x7f090034;
+        public static final int catalogspinner=0x7f09001b;
         public static final int clauses=0x7f090010;
         public static final int consumeButton=0x7f09000a;
         public static final int consumeDetailLayout=0x7f090002;
         public static final int contentlist=0x7f090001;
-        public static final int count=0x7f09002a;
-        public static final int describe=0x7f09001d;
-        public static final int embarrassCommentListView=0x7f09001f;
+        public static final int count=0x7f09002f;
+        public static final int describe=0x7f090022;
+        public static final int embarrassCommentListView=0x7f090024;
         public static final int embarrassDetailLayout=0x7f090004;
-        public static final int embarrassDetailTitle=0x7f090020;
-        public static final int embarrassEditText=0x7f090021;
+        public static final int embarrassDetailTitle=0x7f090025;
+        public static final int embarrassEditText=0x7f090026;
         public static final int embarrassMakeSureButton=0x7f09000c;
         public static final int embarrassTitle=0x7f09000e;
         public static final int embarrassUploadLlayout=0x7f090005;
-        public static final int gallery=0x7f090025;
+        public static final int gallery=0x7f09002a;
         public static final int gridview=0x7f090007;
-        public static final int horizontalScrollView1=0x7f090023;
-        public static final int id_tv_loadingmsg=0x7f09001b;
-        public static final int image=0x7f090027;
-        public static final int img=0x7f090031;
+        public static final int horizontalScrollView1=0x7f090028;
+        public static final int id_tv_loadingmsg=0x7f090020;
+        public static final int image=0x7f09002c;
+        public static final int img=0x7f090036;
         public static final int incomeButton=0x7f09000b;
         public static final int incomeDetailLayout=0x7f090009;
-        public static final int isselected=0x7f090028;
-        public static final int itemContainer=0x7f090018;
-        public static final int itemTextView=0x7f090026;
-        public static final int itemTitle=0x7f090030;
-        public static final int item_image_grid_text=0x7f09002b;
+        public static final int isselected=0x7f09002d;
+        public static final int itemContainer=0x7f09001d;
+        public static final int itemTextView=0x7f09002b;
+        public static final int itemTitle=0x7f090035;
+        public static final int item_image_grid_text=0x7f090030;
         public static final int leave_a_note=0x7f090015;
         public static final int leave_a_note_listView=0x7f09000f;
-        public static final int linear_uploads=0x7f090024;
-        public static final int loadingImageView=0x7f09001a;
+        public static final int linear_uploads=0x7f090029;
+        public static final int loadingImageView=0x7f09001f;
         public static final int money=0x7f090012;
-        public static final int name=0x7f090029;
+        public static final int name=0x7f09002e;
         public static final int noteEditText=0x7f090014;
-        public static final int pictureShow=0x7f09001e;
-        public static final int scrollView1=0x7f090017;
-        public static final int selectAlbumButton=0x7f09002d;
+        public static final int pictureShow=0x7f090023;
+        public static final int scrollView1=0x7f09001c;
+        public static final int selectAlbumButton=0x7f090032;
         public static final int selectedButton=0x7f090008;
-        public static final int slidingMenu=0x7f09002c;
-        public static final int submitButton=0x7f090019;
+        public static final int slidingMenu=0x7f090031;
+        public static final int submitButton=0x7f09001e;
         public static final int tabhost=0x7f090000;
-        public static final int takePhotoButton=0x7f09002e;
+        public static final int takePhotoButton=0x7f090033;
+        public static final int textView1=0x7f090016;
         public static final int textView2=0x7f090011;
         public static final int textView4=0x7f090013;
-        public static final int title=0x7f09001c;
-        public static final int upload=0x7f090032;
+        public static final int title=0x7f090021;
+        public static final int upload=0x7f090037;
         public static final int uploadLayout=0x7f090003;
-        public static final int uploadPicButton=0x7f090022;
+        public static final int uploadPicButton=0x7f090027;
         public static final int xListView=0x7f090006;
-        public static final int xlistview_footer_content=0x7f090033;
-        public static final int xlistview_footer_hint_textview=0x7f090035;
-        public static final int xlistview_footer_progressbar=0x7f090034;
-        public static final int xlistview_header_arrow=0x7f09003a;
-        public static final int xlistview_header_content=0x7f090036;
-        public static final int xlistview_header_hint_textview=0x7f090038;
-        public static final int xlistview_header_progressbar=0x7f09003b;
-        public static final int xlistview_header_text=0x7f090037;
-        public static final int xlistview_header_time=0x7f090039;
+        public static final int xlistview_footer_content=0x7f090038;
+        public static final int xlistview_footer_hint_textview=0x7f09003a;
+        public static final int xlistview_footer_progressbar=0x7f090039;
+        public static final int xlistview_header_arrow=0x7f09003f;
+        public static final int xlistview_header_content=0x7f09003b;
+        public static final int xlistview_header_hint_textview=0x7f09003d;
+        public static final int xlistview_header_progressbar=0x7f090040;
+        public static final int xlistview_header_text=0x7f09003c;
+        public static final int xlistview_header_time=0x7f09003e;
     }
     public static final class layout {
         public static final int activity_center_main=0x7f030000;
@@ -178,22 +185,23 @@ containing a value of this type.
         public static final int common_top_title=0x7f03000a;
         public static final int consume_detail_layout=0x7f03000b;
         public static final int consume_income_detail_list_header=0x7f03000c;
-        public static final int consume_upload_layout=0x7f03000d;
-        public static final int customprogressdialog=0x7f03000e;
-        public static final int embarrass_detail_comment_header=0x7f03000f;
-        public static final int embarrass_detail_layout=0x7f030010;
-        public static final int embarrass_upload_layout=0x7f030011;
-        public static final int gallerypage=0x7f030012;
-        public static final int item=0x7f030013;
-        public static final int item_image_bucket=0x7f030014;
-        public static final int item_image_grid=0x7f030015;
-        public static final int main=0x7f030016;
-        public static final int popupwindow_layer=0x7f030017;
-        public static final int simple_list_item=0x7f030018;
-        public static final int simple_list_item_comment=0x7f030019;
-        public static final int top_title=0x7f03001a;
-        public static final int xlistview_footer=0x7f03001b;
-        public static final int xlistview_header=0x7f03001c;
+        public static final int consume_spinner_add_item_layout=0x7f03000d;
+        public static final int consume_upload_layout=0x7f03000e;
+        public static final int customprogressdialog=0x7f03000f;
+        public static final int embarrass_detail_comment_header=0x7f030010;
+        public static final int embarrass_detail_layout=0x7f030011;
+        public static final int embarrass_upload_layout=0x7f030012;
+        public static final int gallerypage=0x7f030013;
+        public static final int item=0x7f030014;
+        public static final int item_image_bucket=0x7f030015;
+        public static final int item_image_grid=0x7f030016;
+        public static final int main=0x7f030017;
+        public static final int popupwindow_layer=0x7f030018;
+        public static final int simple_list_item=0x7f030019;
+        public static final int simple_list_item_comment=0x7f03001a;
+        public static final int top_title=0x7f03001b;
+        public static final int xlistview_footer=0x7f03001c;
+        public static final int xlistview_header=0x7f03001d;
     }
     public static final class menu {
         public static final int consume=0x7f080000;
@@ -293,7 +301,7 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #Gallery1_android_galleryItemBackground com.owner.disclosureyourlife:android_galleryItemBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #Gallery1_android_galleryItemBackground android:galleryItemBackground}</code></td><td></td></tr>
            </table>
            @see #Gallery1_android_galleryItemBackground
          */
@@ -301,9 +309,9 @@ containing a value of this type.
             0x0101004c
         };
         /**
-          <p>This symbol is the offset where the {@link com.owner.disclosureyourlife.R.attr#android_galleryItemBackground}
+          <p>This symbol is the offset where the {@link android.R.attr#galleryItemBackground}
           attribute's value can be found in the {@link #Gallery1} array.
-          @attr name android:android_galleryItemBackground
+          @attr name android:galleryItemBackground
         */
         public static final int Gallery1_android_galleryItemBackground = 0;
         /** Attributes that can be used with a LabelView.
@@ -334,7 +342,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:text
+          @attr name com.owner.disclosureyourlife:text
         */
         public static final int LabelView_text = 0;
         /**
@@ -349,7 +357,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:textColor
+          @attr name com.owner.disclosureyourlife:textColor
         */
         public static final int LabelView_textColor = 1;
         /**
@@ -365,7 +373,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:textSize
+          @attr name com.owner.disclosureyourlife:textSize
         */
         public static final int LabelView_textSize = 2;
         /** Attributes that can be used with a TogglePrefAttrs.
@@ -374,7 +382,7 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #TogglePrefAttrs_android_preferenceLayoutChild com.owner.disclosureyourlife:android_preferenceLayoutChild}</code></td><td></td></tr>
+           <tr><td><code>{@link #TogglePrefAttrs_android_preferenceLayoutChild android:preferenceLayoutChild}</code></td><td></td></tr>
            </table>
            @see #TogglePrefAttrs_android_preferenceLayoutChild
          */
@@ -382,9 +390,9 @@ containing a value of this type.
             0x01010094
         };
         /**
-          <p>This symbol is the offset where the {@link com.owner.disclosureyourlife.R.attr#android_preferenceLayoutChild}
+          <p>This symbol is the offset where the {@link android.R.attr#preferenceLayoutChild}
           attribute's value can be found in the {@link #TogglePrefAttrs} array.
-          @attr name android:android_preferenceLayoutChild
+          @attr name android:preferenceLayoutChild
         */
         public static final int TogglePrefAttrs_android_preferenceLayoutChild = 0;
     };

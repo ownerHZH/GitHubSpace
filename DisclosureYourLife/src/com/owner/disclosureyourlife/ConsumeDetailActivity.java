@@ -22,9 +22,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -32,6 +35,7 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.BaseAdapter;
@@ -39,6 +43,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,6 +74,9 @@ public class ConsumeDetailActivity extends Activity {
     private Handler handler;//用于上传发布的评论
     private ConsumeComment cc;
     //private Handler rHandler;//用于初始时下载所对应的评论信息
+    
+    private CatalogSpinnerAdapter catalogSpinnerAdapter;
+    private PopupWindow mPopupWindow=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -124,10 +132,10 @@ public class ConsumeDetailActivity extends Activity {
 			items.add("买衣物");
 			items.add("买食物");
 			items.add("送礼物");
-			items.add("交通");
-			items.add("总共");
-			
-			catalogSpinner.setAdapter(new CatalogSpinnerAdapter(context,items,FLAG));			
+			items.add("交通费");
+			items.add("总消费");
+			catalogSpinnerAdapter=new CatalogSpinnerAdapter(context,items,FLAG);
+			catalogSpinner.setAdapter(catalogSpinnerAdapter);			
 			catalogSpinner.setOnItemSelectedListener(itemSelected);
 			submit.setOnClickListener(l);
 		}
@@ -142,10 +150,10 @@ public class ConsumeDetailActivity extends Activity {
 		public void onItemSelected(AdapterView<?> parent, View view,
 				int position, long id) {
 			if(position!=0)
-			{
+			{   
 				//根据Spinner的选择动态创建组建
 				Utils.createModule(context,items,position,itemContainer,FLAG);
-				submit.setVisibility(View.VISIBLE);
+				submit.setVisibility(View.VISIBLE);				
 			}
 			
 		}		
@@ -156,6 +164,37 @@ public class ConsumeDetailActivity extends Activity {
 			
 		}
 	};
+	
+	//显示弹出窗口
+		private void showPopWindow() {
+			
+			View view=getLayoutInflater()
+					.inflate(R.layout.consume_spinner_add_item_layout,null);
+			if(mPopupWindow==null)
+			{
+				mPopupWindow=new PopupWindow(view,
+						LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
+			}
+			mPopupWindow.setFocusable(true);//设置获取焦点		
+			//mPopupWindow.setBackgroundDrawable(new BitmapDrawable());//为了让在外点击消失弹出框
+			//mPopupWindow.setOutsideTouchable(true);// 设置允许在外点击消失 
+			mPopupWindow.setAnimationStyle(R.style.AnimationPreview);//设置弹窗进入与退出的动画效果
+			mPopupWindow.showAtLocation(catalogSpinner, Gravity.CENTER, 0, 0);//showAtLocation(null, Gravity.CENTER, 0, 0);
+			
+			//按钮
+			Button okBtn=(Button) view.findViewById(R.id.add_item_button_ok);
+			Button okCancel=(Button) view.findViewById(R.id.add_item_button_cancel);
+			EditText nameEditText=(EditText) view.findViewById(R.id.add_item_name_editText);
+			EditText numberEditText=(EditText) view.findViewById(R.id.add_item_number_editText);
+			okCancel.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					mPopupWindow.dismiss();
+					mPopupWindow=null;
+				}
+			});
+		}
 	
 	//按钮单机监视器
 	private OnClickListener l=new OnClickListener() {

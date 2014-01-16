@@ -41,7 +41,7 @@ public class ConsumeListActivity extends Activity implements IXListViewListener 
 	private MyProgressDialog pdialog;
 	
 	private int pageno=0;
-	private int pagesize=5;
+	private int pagesize=10;
 	private int pageindex=0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
