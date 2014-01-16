@@ -1,6 +1,8 @@
 package com.owner.disclosureyourlife;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.owner.adapter.CatalogSpinnerAdapter;
@@ -21,6 +23,7 @@ import android.os.Handler;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -292,6 +295,7 @@ public class ConsumeDetailActivity extends Activity {
 				cc=new ConsumeComment();
 				cc.setCid(cid);
 				cc.setComment(sNoteString);
+				cc.setDate(new Date());
 				consumeCommentList.add(0,cc);//把评论加载到最定列表
 				consumeCommentAdapter.notifyDataSetChanged();
 				//为了让ScrollView里面的List显示完整
@@ -427,8 +431,12 @@ public class ConsumeDetailActivity extends Activity {
 	             holder = (ViewHolder)convertView.getTag();//获取holder                
 	         }
 
-	         /*Item组件赋值*/            
-	         holder.title.setText(cclist.get(position).getComment());
+	         /*Item组件赋值*/            	         
+	         DateFormat d = DateFormat.getDateTimeInstance();
+	         String str = d.format(cclist.get(position).getDate());
+	         String htmlStr="<span style='color: red; text-align: center;font-size: 10'>"+str+"</span>";
+	         holder.title.setText(Html.fromHtml(htmlStr)+"\r\n"
+	        		 +cclist.get(position).getComment());
 	         
 	         /**
 	          * 给Item附上样式

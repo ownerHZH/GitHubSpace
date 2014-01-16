@@ -9,14 +9,18 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         select
             id as id, 
 	        cid as cid,
-	        comment as comment
+	        comment as comment,
+	        date as date
          from consume_comment where cid=#{cid,jdbcType=INTEGER} 
                  ORDER BY id DESC
     </select>  
      
     <insert id="insertConsumeComment" parameterType="ConsumeComment" keyProperty="id" useGeneratedKeys="true">         
-        insert into consume_comment(cid,comment)  
-        values(#{cid,jdbcType=INTEGER},#{comment,jdbcType=VARCHAR})        
+        insert into consume_comment(cid,comment,date)  
+        values(
+        #{cid,jdbcType=INTEGER},
+        #{comment,jdbcType=VARCHAR},
+        #{date,jdbcType=TIMESTAMP})        
     </insert>   
     
 </mapper>  

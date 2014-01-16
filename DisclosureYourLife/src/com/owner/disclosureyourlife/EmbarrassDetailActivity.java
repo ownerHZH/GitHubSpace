@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -343,6 +345,7 @@ public class EmbarrassDetailActivity extends Activity {
 					ec=new EmbarrassComment();
 					ec.setEid(eid);
 					ec.setComment(sNoteString);
+					ec.setDate(new Date());
 					embarrassCommentList.add(0,ec);//把评论加载到最定列表
 					embarrassCommentAdapter.notifyDataSetChanged();
 					ecHandler.postDelayed(uploadCommitRunnable, 2000);
@@ -604,9 +607,11 @@ public class EmbarrassDetailActivity extends Activity {
 		             holder = (ViewHolder)convertView.getTag();//获取holder                
 		         }
 
-		         /*Item组件赋值*/            
-		         holder.title.setText(cclist.get(position).getComment());
-		         
+		         /*Item组件赋值*/            		         
+		         DateFormat d = DateFormat.getDateTimeInstance();
+		         String str = d.format(cclist.get(position).getDate());
+		         holder.title.setText(str+"\r\n"
+		        		 +cclist.get(position).getComment());
 		         /**
 		          * 给Item附上样式
 		          */

@@ -9,14 +9,18 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         select
             id as id, 
 	        iid as iid,
-	        comment as comment
+	        comment as comment,
+	        date as date
          from income_comment where iid=#{iid,jdbcType=INTEGER}
             ORDER BY id DESC
     </select>  
      
     <insert id="insertIncomeComment" parameterType="IncomeComment" keyProperty="id" useGeneratedKeys="true">         
-        insert into income_comment(iid,comment)  
-        values(#{iid,jdbcType=INTEGER},#{comment,jdbcType=VARCHAR})        
+        insert into income_comment(iid,comment,date)  
+        values(
+        #{iid,jdbcType=INTEGER},
+        #{comment,jdbcType=VARCHAR},
+        #{date,jdbcType=TIMESTAMP})        
     </insert>   
     
 </mapper>  

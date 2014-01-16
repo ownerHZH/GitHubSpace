@@ -1,6 +1,9 @@
 package com.owner.disclosureyourlife;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.owner.adapter.CatalogSpinnerAdapter;
@@ -288,6 +291,7 @@ public class IncomeDetailActivity extends Activity {
 					ic=new IncomeComment();
 					ic.setIid(iid);
 					ic.setComment(sNoteString);
+					ic.setDate(new Date());
 					incomeCommentList.add(0,ic);//把评论加载到最定列表
 					incomeCommentAdapter.notifyDataSetChanged();
 					//为了让ScrollView里面的List显示完整
@@ -436,9 +440,12 @@ public class IncomeDetailActivity extends Activity {
 		         {
 		             holder = (ViewHolder)convertView.getTag();//获取holder                
 		         }
-
-		         /*Item组件赋值*/            
-		         holder.title.setText(cclist.get(position).getComment());
+		         
+		         /*Item组件赋值*/  
+		         DateFormat d = DateFormat.getDateTimeInstance();
+		         String str = d.format(cclist.get(position).getDate());
+		         holder.title.setText(str+"\r\n"
+		        		 +cclist.get(position).getComment());
 		         
 		         /**
 		          * 给Item附上样式

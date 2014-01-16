@@ -1,12 +1,14 @@
 package com.owner.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class IncomeComment implements Serializable {
 	private static final long serialVersionUID = -2337459230472967102L;
     private int id;
     private int iid;
     private String comment;
+    private Date date;
     
 	public int getId() {
 		return id;
@@ -26,9 +28,16 @@ public class IncomeComment implements Serializable {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
 	@Override
 	public String toString() {
 		return "IncomeComment [id=" + id + ", iid=" + iid + ", comment="
-				+ comment + "]";
+				+ comment + ", date=" + date + "]";
 	}
+
 }
