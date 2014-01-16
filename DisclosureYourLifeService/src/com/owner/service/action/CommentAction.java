@@ -32,8 +32,13 @@ public class CommentAction extends ActionSupport implements
 	private String consumeComment;
 	private String incomeComment;
 	private String embarrassComment;
-	private int pageno=0;//分页的字段
-	private int pagesize=10;
+	/*private int pageno=0;//分页的字段
+	private int pagesize=10;*/
+	
+	//按主键查找
+	private int cid;
+	private int iid;
+	private int eid;
 	
 	//提交消费评论
 	public void ConsumeCommentCommit(){
@@ -122,7 +127,8 @@ public class CommentAction extends ActionSupport implements
         List<ConsumeComment> consumeCommentList = null;
         JsonEntity jsonEntity=new JsonEntity();
 		try {
-			consumeCommentList = dao.getAllConsumeComment(pageno,pagesize);
+			consumeCommentList = dao.getAllConsumeComment(cid);
+			System.out.println("查询consume评论信息-------》》》》》"+"cid="+cid+consumeCommentList.toString());
 	        jsonEntity.setData(GsonTool.getGson().toJson(consumeCommentList).toString());
 	        jsonEntity.setMsg("获取数据成功");
 	        jsonEntity.setStatus(0);
@@ -150,7 +156,7 @@ public class CommentAction extends ActionSupport implements
         List<IncomeComment> incomeCommentList = null;
         JsonEntity jsonEntity=new JsonEntity();
 		try {
-			incomeCommentList = dao.getAllIncomeComment(pageno,pagesize);
+			incomeCommentList = dao.getAllIncomeComment(iid);
 	        jsonEntity.setData(GsonTool.getGson().toJson(incomeCommentList).toString());
 	        jsonEntity.setMsg("获取数据成功");
 	        jsonEntity.setStatus(0);
@@ -178,7 +184,7 @@ public class CommentAction extends ActionSupport implements
         List<EmbarrassComment> embarrassCommentList = null;
         JsonEntity jsonEntity=new JsonEntity();
 		try {
-			embarrassCommentList = dao.getAllEmbarrassComment(pageno,pagesize);
+			embarrassCommentList = dao.getAllEmbarrassComment(eid);
 	        jsonEntity.setData(GsonTool.getGson().toJson(embarrassCommentList).toString());
 	        jsonEntity.setMsg("获取数据成功");
 	        jsonEntity.setStatus(0);
@@ -227,7 +233,7 @@ public class CommentAction extends ActionSupport implements
 	public void setEmbarrassComment(String embarrassComment) {
 		this.embarrassComment = embarrassComment;
 	}
-	public int getPageno() {
+	/*public int getPageno() {
 		return pageno;
 	}
 	public void setPageno(int pageno) {
@@ -238,6 +244,24 @@ public class CommentAction extends ActionSupport implements
 	}
 	public void setPagesize(int pagesize) {
 		this.pagesize = pagesize;
+	}*/
+	public int getCid() {
+		return cid;
+	}
+	public void setCid(int cid) {
+		this.cid = cid;
+	}
+	public int getIid() {
+		return iid;
+	}
+	public void setIid(int iid) {
+		this.iid = iid;
+	}
+	public int getEid() {
+		return eid;
+	}
+	public void setEid(int eid) {
+		this.eid = eid;
 	}
 
 }

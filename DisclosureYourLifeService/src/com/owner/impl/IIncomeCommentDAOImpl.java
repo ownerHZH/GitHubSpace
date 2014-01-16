@@ -18,14 +18,13 @@ public class IIncomeCommentDAOImpl implements IIncomeCommentDAO {
 	    
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<IncomeComment> getAllIncomeComment(int pageno,int pagesize){
+	public List<IncomeComment> getAllIncomeComment(int iid){
 		List<IncomeComment> incomeCommentList=null;
 		SqlSession session = null;
 		try {
 			session = sessionFactory.openSession(); 
 			Map<String, Integer> hashMap=new HashMap<String, Integer>();
-			hashMap.put("pageno", pageno);
-			hashMap.put("pagesize", pagesize);
+			hashMap.put("iid", iid);
 			incomeCommentList=(List<IncomeComment>)session.selectList(
 					"com.owner.domain.IncomeCommentMapper.selectAll",hashMap);
 		} finally

@@ -50,12 +50,15 @@ public class ConsumeListActivity extends Activity implements IXListViewListener 
 		context=ConsumeListActivity.this;
 		consumeListView=(XListView) findViewById(R.id.xListView);
 		consumeListView.setPullLoadEnable(true);
-		//获取网络数据并显示在ListView上
-		getData(0,pagesize,true);//获取网络数据
-		
+				
 		consumeListView.setOnItemClickListener(listener);
 		consumeListView.setXListViewListener(this);
 		mHandler = new Handler();
+		
+		adapter=new ConsumeAndIncomeAdapter(context, datalist);
+		consumeListView.setAdapter(adapter);
+		//获取网络数据并显示在ListView上
+		getData(0,pagesize,true);//获取网络数据
 	}
 	
 	public void getData(int pageno,int pagesize,final boolean first)
@@ -80,17 +83,16 @@ public class ConsumeListActivity extends Activity implements IXListViewListener 
 							Toast.makeText(context, "没有可查看的数据", 2).show();
 						} else if (jsonEntity.getStatus() == 0) {
 							List<Consume> tempList=GsonUtil.getGson().fromJson(jsonEntity.getData(), AppConstants.type_consumeList);
-							if(first)
+							if(tempList!=null&&tempList.size()>0)
 							{
-								pageindex=0;
-								datalist.clear();
-								copyToList(tempList);//把tempList的数据保存到datalist当中	
-								adapter=new ConsumeAndIncomeAdapter(context, datalist);
-								consumeListView.setAdapter(adapter);
-							}else {
+								if(first)
+								{
+									pageindex=0;
+									datalist.clear();									
+								}	
 								copyToList(tempList);//把tempList的数据保存到datalist当中
 								adapter.notifyDataSetChanged();
-							}							
+							}				
 						}else
 						{
 							Toast.makeText(context, "服务器数据出错", 2).show();

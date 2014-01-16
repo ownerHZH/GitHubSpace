@@ -5,6 +5,6 @@ import java.util.List;
 import com.owner.domain.EmbarrassComment;
 
 public interface IEmbarrassCommentDAO {
-	public List<EmbarrassComment> getAllEmbarrassComment(int pageno,int pagesize);
+	public List<EmbarrassComment> getAllEmbarrassComment(int eid);
 	public int insertEmbarrassComment(EmbarrassComment embarrassComment);
 }

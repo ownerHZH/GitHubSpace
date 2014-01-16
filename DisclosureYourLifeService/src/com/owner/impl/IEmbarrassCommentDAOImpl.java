@@ -18,14 +18,13 @@ public class IEmbarrassCommentDAOImpl implements IEmbarrassCommentDAO {
 	    
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<EmbarrassComment> getAllEmbarrassComment(int pageno,int pagesize){
+	public List<EmbarrassComment> getAllEmbarrassComment(int eid){
 		List<EmbarrassComment> embarrassCommentList=null;
 		SqlSession session = null;
 		try {
 			session = sessionFactory.openSession(); 
 			Map<String, Integer> hashMap=new HashMap<String, Integer>();
-			hashMap.put("pageno", pageno);
-			hashMap.put("pagesize", pagesize);
+			hashMap.put("eid", eid);
 			embarrassCommentList=(List<EmbarrassComment>)session.selectList(
 					"com.owner.domain.EmbarrassCommentMapper.selectAll",hashMap);
 		} finally

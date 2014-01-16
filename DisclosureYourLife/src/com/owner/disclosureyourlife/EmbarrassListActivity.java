@@ -53,11 +53,15 @@ public class EmbarrassListActivity extends Activity implements IXListViewListene
 		embarrassListView=(XListView) findViewById(R.id.xListView);
 		embarrassListView.setPullLoadEnable(true);
         context=EmbarrassListActivity.this;
-		//获取网络数据并显示列表
-        getData(0,pagesize,true);
+		
 		embarrassListView.setOnItemClickListener(listener);
 		embarrassListView.setXListViewListener(this);
 		mHandler = new Handler();
+		adapter=new EmbarrassAdapter(context, datalist);
+		embarrassListView.setAdapter(adapter);
+		
+		//获取网络数据并显示列表
+        getData(0,pagesize,true);
 	}
 	
 	/* 获取网络数据函数
@@ -87,18 +91,16 @@ public class EmbarrassListActivity extends Activity implements IXListViewListene
 							Toast.makeText(context, "没有可查看的数据", 2).show();
 						} else if (jsonEntity.getStatus() == 0) {
 							List<Embarrass> tempList=GsonUtil.getGson().fromJson(jsonEntity.getData(), AppConstants.type_embarrassList);
-							if(first)
+							if(tempList!=null&&tempList.size()>0)
 							{
-								pageindex=0;
-								datalist.clear();
-								copyToList(tempList);//把tempList的数据保存到datalist当中	
-								adapter=new EmbarrassAdapter(context, datalist);
-								embarrassListView.setAdapter(adapter);
-							}else{
+								if(first)
+								{
+									pageindex=0;
+									datalist.clear();										
+								}
 								copyToList(tempList);//把tempList的数据保存到datalist当中
 								adapter.notifyDataSetChanged();
-							}
-							
+							}													
 						}else
 						{
 							Toast.makeText(context, "服务器数据出错", 2).show();

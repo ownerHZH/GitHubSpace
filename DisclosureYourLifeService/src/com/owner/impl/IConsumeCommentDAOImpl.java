@@ -18,14 +18,13 @@ public class IConsumeCommentDAOImpl implements IConsumeCommentDAO {
 	    
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ConsumeComment> getAllConsumeComment(int pageno,int pagesize){
+	public List<ConsumeComment> getAllConsumeComment(int cid){
 		List<ConsumeComment> consumeCommentList=null;
 		SqlSession session = null;
 		try {
 			session = sessionFactory.openSession(); 
 			Map<String, Integer> hashMap=new HashMap<String, Integer>();
-			hashMap.put("pageno", pageno);
-			hashMap.put("pagesize", pagesize);
+			hashMap.put("cid", cid);
 			consumeCommentList=(List<ConsumeComment>)session.selectList(
 					"com.owner.domain.ConsumeCommentMapper.selectAll",hashMap);
 		} finally

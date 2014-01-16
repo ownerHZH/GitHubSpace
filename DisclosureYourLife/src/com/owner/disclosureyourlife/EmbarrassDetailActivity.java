@@ -13,21 +13,18 @@ import java.util.Map;
 import com.owner.constant.AppConstants;
 import com.owner.db.DatabaseContext;
 import com.owner.db.MyDatabaseHelper;
-import com.owner.disclosureyourlife.GalleryPage.ImageAdapter;
 import com.owner.domain.Embarrass;
+import com.owner.domain.EmbarrassComment;
 import com.owner.domain.JsonEntity;
 import com.owner.httpgson.HttpAndroidTask;
 import com.owner.httpgson.HttpClientService;
 import com.owner.httpgson.HttpPreExecuteHandler;
 import com.owner.httpgson.HttpResponseHandler;
 import com.owner.pic.Bimp;
-import com.owner.tools.DownloadPicture;
 import com.owner.tools.GetImgFromServer;
 import com.owner.tools.GsonUtil;
 import com.owner.tools.ImageTools;
 import com.owner.tools.MyProgressDialog;
-import com.owner.tools.DownloadPicture.IPictureHandle;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -38,22 +35,25 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewStub;
 import android.view.Window;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -92,6 +92,16 @@ public class EmbarrassDetailActivity extends Activity {
 	private MyDatabaseHelper dbHelper; //本地数据库类
 	private Bitmap bitmap;//显示上传的第一张图片
 	
+	private ListView embarrassCommentListView;
+	private View embarrassCommentListViewHeader;
+	private Button leaveANoteButton;    //评论按钮
+	private EditText leaveANoteEditText;//评论信息输入框
+    private boolean isWriteNote=true;//初始化点击就是写信息
+    private List<EmbarrassComment> embarrassCommentList;
+    private EmbarrassCommentAdapter embarrassCommentAdapter;
+    private Handler ecHandler;//用于上传发布的评论
+    private EmbarrassComment ec;
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -115,9 +125,19 @@ public class EmbarrassDetailActivity extends Activity {
 			title.setText(R.string.embarrass_detail);
 			viewStub=(ViewStub) findViewById(R.id.embarrassDetailLayout);
 			viewStub.inflate();
-			stitle=(TextView) findViewById(R.id.title);
-			sdesc=(TextView) findViewById(R.id.describe);
-			picture=(ImageView) findViewById(R.id.pictureShow);
+			embarrassCommentListView=(ListView) findViewById(R.id.embarrassCommentListView);
+			embarrassCommentListViewHeader=LayoutInflater.from(this)
+					.inflate(R.layout.embarrass_detail_comment_header, null);
+			stitle=(TextView) embarrassCommentListViewHeader.findViewById(R.id.title);
+			sdesc=(TextView) embarrassCommentListViewHeader.findViewById(R.id.describe);
+			picture=(ImageView) embarrassCommentListViewHeader.findViewById(R.id.pictureShow);
+			
+			leaveANoteButton=(Button) embarrassCommentListViewHeader.findViewById(R.id.leave_a_note);
+			leaveANoteButton.setOnClickListener(l);
+			
+			leaveANoteEditText=(EditText) embarrassCommentListViewHeader.findViewById(R.id.noteEditText);
+			leaveANoteEditText.setVisibility(View.GONE);										
+			
 			stitle.setText(data.getEtitle());
 			sdesc.setText(data.getEdesc());
 			eid=data.getEid();//保存传递过来的实体id，为了后面查询更多的图片
@@ -142,6 +162,14 @@ public class EmbarrassDetailActivity extends Activity {
 				}				
 			}			
 			picture.setOnClickListener(l);
+			ecHandler=new Handler();
+			embarrassCommentListView.addHeaderView(embarrassCommentListViewHeader);
+			//列表显示信息
+			embarrassCommentList=new ArrayList<EmbarrassComment>();	
+			embarrassCommentAdapter=new EmbarrassCommentAdapter(embarrassCommentList);
+			embarrassCommentListView.setAdapter(embarrassCommentAdapter);
+			//获取网络评论信息
+			ecHandler.postDelayed(receiveCommentRunnable, 100);
 			
 		}else{
 			FLAG=true;
@@ -285,13 +313,43 @@ public class EmbarrassDetailActivity extends Activity {
 				}
 				
 				break;
+			case R.id.leave_a_note:
+				//评论点击按钮实现函数
+				leaveANote();
+				break;
 			default:
 				break;
 			}
 		}				
 	};
 	
-	
+	//评论点击按钮实现函数
+	private void leaveANote() {
+			if(isWriteNote)
+			{
+				//第一次点击就是写信息 编辑框出现
+				leaveANoteEditText.setVisibility(View.VISIBLE);
+				isWriteNote=false;
+				leaveANoteButton.setText(R.string.consume_detail_leave_a_note_button_button);
+			}else {
+				//不写的时候就是提交写的数据 同时隐藏编辑框
+				String sNoteString=leaveANoteEditText.getText().toString();			
+				isWriteNote=true;
+				leaveANoteEditText.setText("");
+				leaveANoteButton.setText(R.string.consume_detail_leave_a_note_button);
+				leaveANoteEditText.setVisibility(View.GONE);
+				if(sNoteString!=null&&sNoteString!=""&&!sNoteString.equals(null)&&!sNoteString.equals(""))
+				{
+					ec=new EmbarrassComment();
+					ec.setEid(eid);
+					ec.setComment(sNoteString);
+					embarrassCommentList.add(0,ec);//把评论加载到最定列表
+					embarrassCommentAdapter.notifyDataSetChanged();
+					ecHandler.postDelayed(uploadCommitRunnable, 2000);
+				}
+				
+			}
+		}
 	
 	//显示弹出窗口
 	private void showPopWindow() {
@@ -493,4 +551,165 @@ public class EmbarrassDetailActivity extends Activity {
 		}
 		return result;
 	}
+	
+	//评论列表显示数据的adapter
+	private final class EmbarrassCommentAdapter extends BaseAdapter
+		{
+			private LayoutInflater inflater;
+			private List<EmbarrassComment> cclist;
+			
+			/**
+			 * 构造函数
+			 * @param context
+			 */
+			public EmbarrassCommentAdapter(List<EmbarrassComment> cclist)
+			{
+				inflater=LayoutInflater.from(context);
+				this.cclist=cclist;
+			}
+			
+			@Override
+			public int getCount() {
+				// TODO Auto-generated method stub
+				return cclist.size();
+			}
+
+			@Override
+			public Object getItem(int position) {
+				// TODO Auto-generated method stub
+				return cclist.get(position);
+			}
+
+			@Override
+			public long getItemId(int position) {
+				// TODO Auto-generated method stub
+				return position;
+			}
+
+			@Override
+			public View getView(int position, View convertView, ViewGroup parent) {
+				 ViewHolder holder;        
+		         if (convertView == null) {
+		        	 
+			          convertView = inflater.inflate(R.layout.simple_list_item_comment,null);	
+			          holder = new ViewHolder();
+			          
+			         /*获取Item组件*/                    
+			         holder.title = (TextView) convertView.findViewById(R.id.itemTitle);
+			         
+			         convertView.setTag(holder);//给holder设置tag                   
+		         }
+		         else
+		         {
+		             holder = (ViewHolder)convertView.getTag();//获取holder                
+		         }
+
+		         /*Item组件赋值*/            
+		         holder.title.setText(cclist.get(position).getComment());
+		         
+		         /**
+		          * 给Item附上样式
+		          */
+		         if (cclist.size() == 1) {
+		             convertView.setBackgroundResource(R.drawable.circle_list_single);
+		         } else if (cclist.size() > 1) {
+		             if (position == 0) {
+		                 convertView.setBackgroundResource(R.drawable.circle_list_top);
+		             } else if (position == (cclist.size() - 1)) {
+		                 convertView.setBackgroundResource(R.drawable.circle_list_bottom);
+		             } else {
+		                 convertView.setBackgroundResource(R.drawable.circle_list_middle);
+		             }
+		         }
+		           
+		         return convertView;
+		       }			
+			/**
+			 * 组件内部类
+			 * */
+			public final class ViewHolder{
+				public TextView title;   //列表显示的单项
+			}
+		}
+
+		//获取网络评论信息的runnable
+	private Runnable receiveCommentRunnable=new Runnable() {
+		
+		@Override
+		public void run() {
+			HttpClientService svr = new HttpClientService(AppConstants.EmbarrassCommentRequestAction,false);
+			//参数
+			svr.addParameter("eid",eid);
+			//svr.addParameter("pageno",0);
+			//svr.addParameter("pagesize",0);
+			
+			HttpAndroidTask task = new HttpAndroidTask(context, svr,
+					new HttpResponseHandler() {
+						// 响应事件
+						public void onResponse(Object obj) {
+							//pdialog.stop();
+							JsonEntity jsonEntity = GsonUtil.parseObj2JsonEntity(
+									obj,context,false);
+							if (jsonEntity.getStatus() == 1) {
+								//Toast.makeText(context, "提交数据失败", 2).show();
+							} else if (jsonEntity.getStatus() == 0) {
+								//Toast.makeText(context, "提交成功", 2).show();
+								List<EmbarrassComment> ccl=GsonUtil.getGson().fromJson( jsonEntity.getData(),
+										  AppConstants.type_embarrassCommentList);
+								if(ccl!=null&&ccl.size()>0)
+								{
+									for(int i=0;i<ccl.size();i++)
+									{
+										embarrassCommentList.add(ccl.get(i));
+									}									
+									//ListView更新数据									
+									embarrassCommentAdapter.notifyDataSetChanged();																	
+								}								
+							}else
+							{
+								//Toast.makeText(context, "服务器出错", 2).show();
+							}
+						}
+					}, new HttpPreExecuteHandler() {
+						public void onPreExecute(Context context) {
+						}
+					});
+			task.execute(new String[] {});
+			
+		}
+	};
+	
+	//上传发布的评论runnable
+	private Runnable uploadCommitRunnable=new Runnable() {
+		
+		@Override
+		public void run() {
+			/*
+			 * 上传访问的地址  
+			 *   true 有File文件要上传  
+			 *   false无File文件要上传
+			 */
+			HttpClientService svr = new HttpClientService(AppConstants.EmbarrassCommentUpLoadAction,false);
+			//参数
+			svr.addParameter("embarrassComment",GsonUtil.getGson().toJson(ec));
+			
+			HttpAndroidTask task = new HttpAndroidTask(context, svr,
+					new HttpResponseHandler() {
+						// 响应事件
+						public void onResponse(Object obj) {
+							JsonEntity jsonEntity = GsonUtil.parseObj2JsonEntity(
+									obj,context,false);
+							if (jsonEntity.getStatus() == 1) {
+							} else if (jsonEntity.getStatus() == 0) {
+							}else
+							{
+							}
+						}
+					}, new HttpPreExecuteHandler() {
+						public void onPreExecute(Context context) {
+						}
+					});
+			task.execute(new String[] {});
+		}
+	};
 }

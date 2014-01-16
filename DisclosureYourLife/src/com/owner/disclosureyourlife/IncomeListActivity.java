@@ -53,11 +53,15 @@ public class IncomeListActivity extends Activity implements IXListViewListener {
 		incomeListView=(XListView) findViewById(R.id.xListView);
 		incomeListView.setPullLoadEnable(true);
 		context=IncomeListActivity.this;
-        //获取网络数据显示在列表上
-		getData(0,pagesize,true);
+        
 		incomeListView.setOnItemClickListener(listener);
 		incomeListView.setXListViewListener(this);
 		mHandler = new Handler();
+		
+		adapter=new IncomeAdapter(context, datalist);
+		incomeListView.setAdapter(adapter);
+		//获取网络数据显示在列表上
+		getData(0,pagesize,true);
 	}
 	
 	/* 获取网络数据函数
@@ -87,17 +91,16 @@ public class IncomeListActivity extends Activity implements IXListViewListener {
 							Toast.makeText(context, "没有可查看的数据", 2).show();
 						} else if (jsonEntity.getStatus() == 0) {
 							List<Income> tempList=GsonUtil.getGson().fromJson(jsonEntity.getData(), AppConstants.type_incomeList);
-							if(first)
+							if(tempList!=null&&tempList.size()>0)
 							{
-								pageindex=0;
-								datalist.clear();
-								copyToList(tempList);//把tempList的数据保存到datalist当中	
-								adapter=new IncomeAdapter(context, datalist);
-								incomeListView.setAdapter(adapter);
-							}else{
+								if(first)
+								{
+									pageindex=0;
+									datalist.clear();									
+								}
 								copyToList(tempList);//把tempList的数据保存到datalist当中
 								adapter.notifyDataSetChanged();
-							}						
+							}					
 						}else
 						{
 							Toast.makeText(context, "服务器数据出错", 2).show();

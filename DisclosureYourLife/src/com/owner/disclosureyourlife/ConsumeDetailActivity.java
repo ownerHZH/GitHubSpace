@@ -1,11 +1,9 @@
 package com.owner.disclosureyourlife;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.owner.adapter.CatalogSpinnerAdapter;
-import com.owner.adapter.ConsumeAndIncomeAdapter.ViewHolder;
 import com.owner.constant.AppConstants;
 import com.owner.domain.Consume;
 import com.owner.domain.ConsumeComment;
@@ -18,8 +16,8 @@ import com.owner.tools.GsonUtil;
 import com.owner.tools.MyProgressDialog;
 import com.owner.tools.Utils;
 
-import android.R.integer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -53,18 +51,21 @@ public class ConsumeDetailActivity extends Activity {
 	private List<String> items;//选择项的内容
 	private Button submit;//提交按钮
     private ViewStub viewStub;
-    private CatalogSpinnerAdapter catalogAdapter;
     private TextView clauses;
     private TextView money;
     private MyProgressDialog pdialog;
     
     private Button leaveANoteButton;    //评论按钮
     private ListView leaveANoteListView;//评论显示列表
+    private View leaveANoteListViewHeader;//评论显示列表的头
     private EditText leaveANoteEditText;//评论信息输入框
     private boolean isWriteNote=true;//初始化点击就是写信息
     private List<ConsumeComment> consumeCommentList;
     private ConsumeCommentAdapter consumeCommentAdapter;
     private int cid=0;
+    private Handler handler;//用于上传发布的评论
+    private ConsumeComment cc;
+    //private Handler rHandler;//用于初始时下载所对应的评论信息
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -80,28 +81,32 @@ public class ConsumeDetailActivity extends Activity {
 		if(intent.hasExtra("data"))//显示详细的页面
 		{
 			Consume data=(Consume) intent.getSerializableExtra("data");
-			Log.e("data数据", data.toString());
+			handler=new Handler();
 			//detail.setText(data);
 			title.setText(getString(R.string.consume_detail));
 			viewStub=(ViewStub) findViewById(R.id.consumeDetailLayout);
 			viewStub.inflate();
+			leaveANoteListView=(ListView) findViewById(R.id.leave_a_note_listView);
+			leaveANoteListViewHeader=LayoutInflater.from(this).inflate(R.layout.consume_income_detail_list_header, null);
 			cid=data.getCid();//这个详细页面所显示的数据id号
-			clauses=(TextView) findViewById(R.id.clauses);
-			money=(TextView) findViewById(R.id.money);
+			clauses=(TextView) leaveANoteListViewHeader.findViewById(R.id.clauses);
+			money=(TextView) leaveANoteListViewHeader.findViewById(R.id.money);
 			
 			clauses.setText(data.getName());
 			money.setText("  "+data.getMoney()+"  ");
-			leaveANoteButton=(Button) findViewById(R.id.leave_a_note);
+			leaveANoteButton=(Button) leaveANoteListViewHeader.findViewById(R.id.leave_a_note);
 			leaveANoteButton.setOnClickListener(l);
-			leaveANoteListView=(ListView) findViewById(R.id.leave_a_note_listView);
-			leaveANoteEditText=(EditText) findViewById(R.id.noteEditText);
+			
+			leaveANoteEditText=(EditText) leaveANoteListViewHeader.findViewById(R.id.noteEditText);
 			leaveANoteEditText.setVisibility(View.GONE);
+			
+			leaveANoteListView.addHeaderView(leaveANoteListViewHeader);
 			//列表显示信息
-			consumeCommentList=new ArrayList<ConsumeComment>();
+			consumeCommentList=new ArrayList<ConsumeComment>();	
 			consumeCommentAdapter=new ConsumeCommentAdapter(consumeCommentList);
 			leaveANoteListView.setAdapter(consumeCommentAdapter);
-			//为了让ScrollView里面的List显示完整
-			Utils.setListViewHeightBasedOnChildren(leaveANoteListView);
+			//获取网络评论信息
+			handler.postDelayed(receiveCommentRunnable, 100);			
 			
 		}else {//上传自己的页面显示
 			viewStub=(ViewStub) findViewById(R.id.uploadLayout);
@@ -175,6 +180,98 @@ public class ConsumeDetailActivity extends Activity {
 		}		
 	};
 	
+	//获取网络评论信息的runnable
+	private Runnable receiveCommentRunnable=new Runnable() {
+		
+		@Override
+		public void run() {
+			HttpClientService svr = new HttpClientService(AppConstants.ConsumeCommentRequestAction,false);
+			//参数
+			svr.addParameter("cid",cid);
+			//svr.addParameter("pageno",0);
+			//svr.addParameter("pagesize",0);
+			
+			HttpAndroidTask task = new HttpAndroidTask(context, svr,
+					new HttpResponseHandler() {
+						// 响应事件
+						public void onResponse(Object obj) {
+							//pdialog.stop();
+							JsonEntity jsonEntity = GsonUtil.parseObj2JsonEntity(
+									obj,context,false);
+							if (jsonEntity.getStatus() == 1) {
+								//Toast.makeText(context, "提交数据失败", 2).show();
+							} else if (jsonEntity.getStatus() == 0) {
+								//Toast.makeText(context, "提交成功", 2).show();
+								List<ConsumeComment> ccl=GsonUtil.getGson().fromJson( jsonEntity.getData(),
+										  AppConstants.type_consumeCommentList);
+								if(ccl!=null&&ccl.size()>0)
+								{
+									for(int i=0;i<ccl.size();i++)
+									{
+										consumeCommentList.add(ccl.get(i));
+									}									
+									//ListView更新数据
+									
+									consumeCommentAdapter.notifyDataSetChanged();
+									//为了让ScrollView里面的List显示完整
+									//Utils.setListViewHeightBasedOnChildren(leaveANoteListView);
+								}								
+							}else
+							{
+								//Toast.makeText(context, "服务器出错", 2).show();
+							}
+						}
+					}, new HttpPreExecuteHandler() {
+						public void onPreExecute(Context context) {
+							/*pdialog = new MyProgressDialog(context);
+							pdialog.start("提交数据中...");*/
+						}
+					});
+			task.execute(new String[] {});
+			
+		}
+	};
+	
+	//上传发布的评论runnable
+	private Runnable uploadCommitRunnable=new Runnable() {
+		
+		@Override
+		public void run() {
+			/*
+			 * 上传访问的地址  
+			 *   true 有File文件要上传  
+			 *   false无File文件要上传
+			 */
+			HttpClientService svr = new HttpClientService(AppConstants.ConsumeCommentUpLoadAction,false);
+			//参数
+			svr.addParameter("consumeComment",GsonUtil.getGson().toJson(cc));
+			
+			HttpAndroidTask task = new HttpAndroidTask(context, svr,
+					new HttpResponseHandler() {
+						// 响应事件
+						public void onResponse(Object obj) {
+							//pdialog.stop();
+							JsonEntity jsonEntity = GsonUtil.parseObj2JsonEntity(
+									obj,context,false);
+							if (jsonEntity.getStatus() == 1) {
+								//Toast.makeText(context, "提交数据失败", 2).show();
+							} else if (jsonEntity.getStatus() == 0) {
+								//Toast.makeText(context, "提交成功", 2).show();
+							}else
+							{
+								//Toast.makeText(context, "服务器出错", 2).show();
+							}
+						}
+					}, new HttpPreExecuteHandler() {
+						public void onPreExecute(Context context) {
+							/*pdialog = new MyProgressDialog(context);
+							pdialog.start("提交数据中...");*/
+						}
+					});
+			task.execute(new String[] {});
+		}
+	};
+	
 	//评论点击按钮实现函数
 	private void leaveANote() {
 		if(isWriteNote)
@@ -192,19 +289,20 @@ public class ConsumeDetailActivity extends Activity {
 			leaveANoteEditText.setVisibility(View.GONE);
 			if(sNoteString!=null&&sNoteString!=""&&!sNoteString.equals(null)&&!sNoteString.equals(""))
 			{
-				ConsumeComment cc=new ConsumeComment();
+				cc=new ConsumeComment();
 				cc.setCid(cid);
 				cc.setComment(sNoteString);
-				consumeCommentList.add(cc);
+				consumeCommentList.add(0,cc);//把评论加载到最定列表
 				consumeCommentAdapter.notifyDataSetChanged();
 				//为了让ScrollView里面的List显示完整
-				Utils.setListViewHeightBasedOnChildren(leaveANoteListView);
-				//这个评论信息的保存到数据库也在这里
+				//Utils.setListViewHeightBasedOnChildren(leaveANoteListView);	
+				//这个评论信息的保存到数据库
+				handler.postDelayed(uploadCommitRunnable, 2000);
 			}
 			
 		}
 	}
-	
+
 	//点击确定按钮上传字段
 	public void upLoadData()
 	{		
@@ -350,6 +448,13 @@ public class ConsumeDetailActivity extends Activity {
 	         return convertView;
 	       }
 		
+		@Override
+		public void notifyDataSetChanged() {
+			// TODO Auto-generated method stub
+			super.notifyDataSetChanged();
+			//Utils.setListViewHeightBasedOnChildren(leaveANoteListView);
+		}
+
 		/**
 		 * 组件内部类
 		 * */
