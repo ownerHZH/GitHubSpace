@@ -608,8 +608,12 @@ public class EmbarrassDetailActivity extends Activity {
 		         }
 
 		         /*Item组件赋值*/            		         
+		        /* DateFormat d = DateFormat.getDateTimeInstance();
+		         String str = d.format(cclist.get(position).getDate());*/
+		         Date date=cclist.get(position).getDate();
+		         date=(date==null?new Date():date);
 		         DateFormat d = DateFormat.getDateTimeInstance();
-		         String str = d.format(cclist.get(position).getDate());
+		         String str = d.format(date);
 		         holder.title.setText(str+"\r\n"
 		        		 +cclist.get(position).getComment());
 		         /**

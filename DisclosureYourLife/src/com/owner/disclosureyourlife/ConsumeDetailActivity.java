@@ -470,9 +470,11 @@ public class ConsumeDetailActivity extends Activity {
 	             holder = (ViewHolder)convertView.getTag();//获取holder                
 	         }
 
-	         /*Item组件赋值*/            	         
+	         /*Item组件赋值*/   
+	         Date date=cclist.get(position).getDate();
+	         date=(date==null?new Date():date);
 	         DateFormat d = DateFormat.getDateTimeInstance();
-	         String str = d.format(cclist.get(position).getDate());
+	         String str = d.format(date);
 	         String htmlStr="<span style='color: red; text-align: center;font-size: 10'>"+str+"</span>";
 	         holder.title.setText(Html.fromHtml(htmlStr)+"\r\n"
 	        		 +cclist.get(position).getComment());

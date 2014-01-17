@@ -15,6 +15,7 @@ public class ConsumeAndIncomeAdapter extends BaseAdapter {
 
 	private LayoutInflater inflater;
 	private List<Consume> list;
+	private Context context;
 	
 	/**
 	 * 构造函数
@@ -24,6 +25,7 @@ public class ConsumeAndIncomeAdapter extends BaseAdapter {
 	{
 		inflater=LayoutInflater.from(context);
 		this.list=datalist;
+		this.context=context;
 	}
 	
 	@Override
@@ -49,7 +51,7 @@ public class ConsumeAndIncomeAdapter extends BaseAdapter {
 		 ViewHolder holder;        
          if (convertView == null) {
         	 
-	          convertView = inflater.inflate(R.layout.simple_list_item,null);	
+	          convertView = inflater.inflate(R.layout.simple_list_item,null);//simple_list_item	
 	          holder = new ViewHolder();
 	          
 	         /*获取Item组件*/                    
@@ -79,6 +81,17 @@ public class ConsumeAndIncomeAdapter extends BaseAdapter {
                  convertView.setBackgroundResource(R.drawable.circle_list_middle);
              }
          }
+        /* if (list.size() == 1) {
+             convertView.setBackgroundResource(R.drawable.signal_item);
+         } else if (list.size() > 1) {
+             if (position == 0) {
+                 convertView.setBackgroundResource(R.drawable.signal_item_top);
+             } else if (position == (list.size() - 1)) {
+                 convertView.setBackgroundResource(R.drawable.signal_item_bottom);
+             } else {
+                 convertView.setBackgroundResource(R.drawable.signal_item_middle);
+             }
+         }*/
            
          return convertView;
        }
