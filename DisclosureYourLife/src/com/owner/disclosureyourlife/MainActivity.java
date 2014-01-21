@@ -17,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.TabHost.OnTabChangeListener;
@@ -120,20 +121,24 @@ public class MainActivity extends Activity {
         //tabHost.setup();
 
         tabWidget = tabHost.getTabWidget();
-                        
         tabHost.addTab(tabHost
                 .newTabSpec("tab1")
-                .setIndicator("消费排名",null)
+                .setIndicator("晒消费",null)
                 .setContent(new Intent(context,ConsumeListActivity.class)));//R.id.contentlist new Intent(context,ConsumeActivity.class)
 
         tabHost.addTab(tabHost
                 .newTabSpec("tab2")
-                .setIndicator("收入排名",null)
+                .setIndicator("晒收入",null)
                 .setContent(new Intent(context,IncomeListActivity.class)));//R.id.contentlist new Intent(context,IncomeActivity.class)
         tabHost.addTab(tabHost
                 .newTabSpec("tab3")
-                .setIndicator("糗事儿排名",null)
+                .setIndicator("晒糗事",null)
                 .setContent(new Intent(context,EmbarrassListActivity.class)));
+        
+        tabHost.addTab(tabHost
+                .newTabSpec("tab4")
+                .setIndicator("晒素容",null)
+                .setContent(new Intent(context,ImageListActivity.class)));
         //设置TabHost标题导航栏的高度和字体
         setTabViewParas();
         setTabBackground();//初始化导航背景
@@ -169,7 +174,7 @@ public class MainActivity extends Activity {
 		{
 			View v = tabWidget.getChildAt(i); 
 	        if (tabHost.getCurrentTab() == i)
-	        { 
+	        { 	   
 		        v.setBackgroundColor(Color.WHITE); 
 		        //v.setBackgroundDrawable(getResources().getDrawable(R.drawable.chat)); 
 	        } else 

@@ -49,5 +49,12 @@
     <string name="xlistview_header_last_time">上次更新时间：</string>
     <string name="xlistview_footer_hint_normal">查看更多</string>
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
+    
+    <string name="menu_item_clear_memory_cache">清除内存缓存</string>
+    <string name="menu_item_clear_disc_cache">清除硬盘缓存</string>
+    <string name="menu_item_pause_on_scroll">Pause on scroll</string>
+    <string name="menu_item_pause_on_fling">Pause on fling</string>
+    <!-- Content descriptions -->
+    <string name="descr_image">Image</string>
 </resources>
 
