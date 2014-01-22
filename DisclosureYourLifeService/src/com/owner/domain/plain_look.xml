@@ -50,11 +50,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
           </foreach> 
     </insert>
     
-    <update id="updatePlainLookCount" parameterType="java.lang.String">  
+    <update id="updatePlainLookCount">  
         update plain_look set count=count+1 where id= #{gobid,jdbcType=INTEGER} 
     </update>
     
-    <update id="updatePlainLookBCount" parameterType="java.lang.String">  
+    <update id="updatePlainLookBCount">  
         update plain_look set bcount=bcount+1 where id= #{gobid,jdbcType=INTEGER} 
     </update> 
  

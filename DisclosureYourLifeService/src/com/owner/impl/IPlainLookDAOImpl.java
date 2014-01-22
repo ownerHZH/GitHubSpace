@@ -97,9 +97,9 @@ public class IPlainLookDAOImpl implements IPlainLookDAO {
 		SqlSession session = null;
 		try {
 			session = sessionFactory.openSession(); 
-			/*Map<String, String> hashMap=new HashMap<String, String>();
-			hashMap.put("gobid", gobid);*/
-			session.update("com.owner.domain.PlainLookMapper.updatePlainLookCount",gobid);
+			Map<String, String> hashMap=new HashMap<String, String>();
+			hashMap.put("gobid", gobid);
+			session.update("com.owner.domain.PlainLookMapper.updatePlainLookCount",hashMap);
 		} finally
 		{
 			session.close();
@@ -111,9 +111,9 @@ public class IPlainLookDAOImpl implements IPlainLookDAO {
 		SqlSession session = null;
 		try {
 			session = sessionFactory.openSession(); 
-			/*Map<String, String> hashMap=new HashMap<String, String>();
-			hashMap.put("gobid", gobid);*/
-			session.update("com.owner.domain.PlainLookMapper.updatePlainLookBCount",gobid);
+			Map<String, String> hashMap=new HashMap<String, String>();
+			hashMap.put("gobid", gobid);
+			session.update("com.owner.domain.PlainLookMapper.updatePlainLookBCount",hashMap);
 		} finally
 		{
 			session.close();

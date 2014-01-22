@@ -15,6 +15,7 @@ PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
         <typeAlias type="com.owner.domain.IncomeComment" alias="IncomeComment"/>
         <typeAlias type="com.owner.domain.EmbarrassComment" alias="EmbarrassComment"/>
     </typeAliases>
+
 	<environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC" />
