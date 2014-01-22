@@ -9,6 +9,7 @@ PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
         <typeAlias type="com.owner.domain.Embarrass" alias="Embarrass"/>
         <typeAlias type="com.owner.domain.Picture" alias="Picture"/>
         <typeAlias type="com.owner.domain.User" alias="User"/>
+        <typeAlias type="com.owner.domain.PlainLook" alias="PlainLook"/>
         
         <typeAlias type="com.owner.domain.ConsumeComment" alias="ConsumeComment"/>  
         <typeAlias type="com.owner.domain.IncomeComment" alias="IncomeComment"/>
@@ -31,6 +32,7 @@ PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
 		<mapper resource="com/owner/domain/embarrass.xml" />
 		<mapper resource="com/owner/domain/picture.xml" />
 		<mapper resource="com/owner/domain/user.xml" />
+		<mapper resource="com/owner/domain/plain_look.xml" />
 		
 		<mapper resource="com/owner/domain/consume_comment.xml" />
 		<mapper resource="com/owner/domain/income_comment.xml" />

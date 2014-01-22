@@ -4,8 +4,7 @@
    <constant name="struts.multipart.maxSize" value="524288000"/>
    <constant name="struts.multipart.saveDir" value="/tmp"/>
    <package name="service" namespace="/" extends="json-default">
-   
-   
+    
       <action name="EmbarrassCommentCommit" class="com.owner.service.action.CommentAction" method="EmbarrassCommentCommit">
          <result type="json" />
       </action>
@@ -56,6 +55,17 @@
       
       <action name="LoadMorePictures" class="com.owner.service.action.AndroidService" method="loadMorePicture">
          <result type="stream" />
-      </action>      
+      </action> 
+      
+      <action name="UploadPlainLook" class="com.owner.service.action.PlainLookAction" method="uploadPlainLook">
+         <result type="stream" />
+      </action>
+      
+      <action name="QueryAllPlainLook" class="com.owner.service.action.PlainLookAction" method="getPlainLookList">
+         <result type="stream" />
+      </action> 
+      <action name="UpdatePlainLookCount" class="com.owner.service.action.PlainLookAction" method="updatePlainLookCount">
+         <result type="stream" />
+      </action>    
    </package>
 </struts>    

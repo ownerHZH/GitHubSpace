@@ -1,22 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:padding="1dip" >
+    android:layout_height="fill_parent" >
 
-    <ImageView
-        android:id="@+id/image"
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="1dip" >
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/descr_image" />
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+    </FrameLayout>
+
+<RadioGroup
+    android:id="@+id/goodOrBadRadioGroup"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:gravity="center"
+    android:orientation="horizontal" >
+
+    <RadioButton
+        android:id="@+id/goodRadio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/descr_image" />
+        android:layout_marginRight="80dp"
+        android:drawableRight="@drawable/good" />
 
-    <ProgressBar
-        android:id="@+id/loading"
+    <RadioButton
+        android:id="@+id/badRadio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone" />
+        android:drawableRight="@drawable/bad" />
 
-</FrameLayout>
+</RadioGroup>
+
+</RelativeLayout>

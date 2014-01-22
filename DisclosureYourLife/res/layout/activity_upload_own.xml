@@ -15,22 +15,29 @@
 
     <Button
         android:id="@+id/consumeButton"
-        android:layout_width="80dp"
+        android:layout_width="100dp"
         android:layout_height="40dp"
         android:layout_marginBottom="5dp"
-        android:background="@drawable/btn_backg_c" />
+        android:background="@drawable/consume_button" />
 
     <Button
         android:id="@+id/incomeButton"
-        android:layout_width="80dp"
+        android:layout_width="100dp"
         android:layout_height="40dp"
         android:layout_marginBottom="5dp"
-        android:background="@drawable/btn_backg_i" />
+        android:background="@drawable/income_button" />
 
     <Button
         android:id="@+id/embarrassMakeSureButton"
-        android:layout_width="80dp"
+        android:layout_width="100dp"
         android:layout_height="40dp"
-        android:background="@drawable/btn_backg_e" />
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/embarrass_button" />
+
+    <Button
+        android:id="@+id/realface_button"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:background="@drawable/realface_button" />
 
 </LinearLayout>

@@ -15,9 +15,11 @@
  *******************************************************************************/
 package com.owner.disclosureyourlife;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -29,7 +31,18 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.owner.constant.AppConstants;
 import com.owner.constant.AppConstants.Extra;
+import com.owner.domain.Embarrass;
+import com.owner.domain.JsonEntity;
+import com.owner.domain.PlainLook;
+import com.owner.httpgson.HttpAndroidTask;
+import com.owner.httpgson.HttpClientService;
+import com.owner.httpgson.HttpPreExecuteHandler;
+import com.owner.httpgson.HttpResponseHandler;
+import com.owner.tools.DialogUtil;
+import com.owner.tools.GsonUtil;
+import com.owner.tools.MyProgressDialog;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,15 +54,22 @@ public class ImageListActivity extends AbsListViewBaseActivity {
 
 	DisplayImageOptions options;
 
-	String[] imageUrls;
+	List<String> imageUrls=new ArrayList<String>();
+	List<Integer> ids=new ArrayList<Integer>();
+	private List<PlainLook> datalist=new ArrayList<PlainLook>();
+	private Context context=ImageListActivity.this;
+	private MyProgressDialog pdialog;
 
+	private ItemAdapter adapter;
+	private int pageindex;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ac_image_list);
 
-		Bundle bundle = getIntent().getExtras();
-		imageUrls = AppConstants.IMAGES;
+		//Bundle bundle = getIntent().getExtras();
+		//imageUrls = AppConstants.IMAGES;
+		getData(0,20,true);
 
 		options = new DisplayImageOptions.Builder()
 			.showImageOnLoading(R.drawable.ic_stub)
@@ -62,13 +82,81 @@ public class ImageListActivity extends AbsListViewBaseActivity {
 			.build();
 
 		listView = (ListView) findViewById(android.R.id.list);
-		((ListView) listView).setAdapter(new ItemAdapter());
+		adapter=new ItemAdapter();
+		((ListView) listView).setAdapter(adapter);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				startImagePagerActivity(position);
 			}
 		});
+	}
+	
+	/* 获取网络数据函数
+	 * pageno  起始位置
+	 * pagesize 每次请求的条数
+	 * first   是否为第一次请求数据
+	 */
+	public void getData(int pageno,int pagesize,final boolean first)
+	{
+		HttpClientService svr = new HttpClientService(AppConstants.PlainLookRequestAction);
+		//参数
+		svr.addParameter("pageno",pageno);
+		svr.addParameter("pagesize",pagesize);
+		
+		HttpAndroidTask task = new HttpAndroidTask(context, svr,
+				new HttpResponseHandler() {
+				
+					// 响应事件
+					public void onResponse(Object obj) {
+						if(first)
+						{
+							pdialog.stop();	
+						}						
+						JsonEntity jsonEntity = GsonUtil.parseObj2JsonEntity(
+								obj,context,false);
+						if (jsonEntity.getStatus() == 1) {
+							Toast.makeText(context, "没有可查看的数据", 2).show();
+						} else if (jsonEntity.getStatus() == 0) {
+							List<PlainLook> tempList=GsonUtil.getGson().fromJson(jsonEntity.getData(), AppConstants.type_plainLookList);
+							if(tempList!=null&&tempList.size()>0)
+							{
+								if(first)
+								{
+									pageindex=0;
+									datalist.clear();
+									imageUrls.clear();
+									ids.clear();
+								}
+								copyToList(tempList);//把tempList的数据保存到datalist当中
+								adapter.notifyDataSetChanged();
+							}													
+						}else
+						{
+							Toast.makeText(context, "服务器数据出错", 2).show();
+						}
+					}
+				}, new HttpPreExecuteHandler() {
+					public void onPreExecute(Context context) {
+						if(first)
+						{
+							pdialog = new MyProgressDialog(context);
+							DialogUtil.setAttr4progressDialog(pdialog);	
+						}						
+					}
+				});
+		task.execute(new String[] {});
+	}
+	
+	//把一个list中的数据拷贝到另外一个list当中
+	private void copyToList(List<PlainLook> tempList) {
+		for(int i=0;i<tempList.size();i++)
+		{
+			datalist.add(tempList.get(i));
+			imageUrls.add(tempList.get(i).getPath());
+			ids.add(tempList.get(i).getId());
+		}
+		
 	}
 
 	@Override
@@ -79,7 +167,8 @@ public class ImageListActivity extends AbsListViewBaseActivity {
 
 	private void startImagePagerActivity(int position) {
 		Intent intent = new Intent(this, ImagePagerActivity.class);
-		intent.putExtra(Extra.IMAGES, imageUrls);
+		intent.putIntegerArrayListExtra(Extra.IDS, (ArrayList<Integer>) ids);
+		intent.putStringArrayListExtra(Extra.IMAGES,(ArrayList<String>) imageUrls);
 		intent.putExtra(Extra.IMAGE_POSITION, position);
 		startActivity(intent);
 	}
@@ -95,7 +184,7 @@ public class ImageListActivity extends AbsListViewBaseActivity {
 
 		@Override
 		public int getCount() {
-			return imageUrls.length;
+			return datalist.size();
 		}
 
 		@Override
@@ -122,9 +211,9 @@ public class ImageListActivity extends AbsListViewBaseActivity {
 				holder = (ViewHolder) view.getTag();
 			}
 
-			holder.text.setText("Item " + (position + 1));
+			holder.text.setText(datalist.get(position).getTitle());
 
-			imageLoader.displayImage(imageUrls[position], holder.image, options, animateFirstListener);
+			imageLoader.displayImage(datalist.get(position).getPath(), holder.image, options, animateFirstListener);
 
 			return view;
 		}

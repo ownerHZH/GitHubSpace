@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
 	private Button btn;
 	private SlidingMenu mSlidingMenu;
 	
-	private Button consume,income,embarrass;
+	private Button consume,income,embarrass,plainLook;
 	private boolean isSet=false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +64,12 @@ public class MainActivity extends Activity {
         consume=(Button) rightView.findViewById(R.id.consumeButton);
 		income=(Button) rightView.findViewById(R.id.incomeButton);
 		embarrass=(Button) rightView.findViewById(R.id.embarrassMakeSureButton);
+		plainLook=(Button) rightView.findViewById(R.id.realface_button);
 				
 		consume.setOnClickListener(l);
 		income.setOnClickListener(l);
 		embarrass.setOnClickListener(l);
+		plainLook.setOnClickListener(l);
 
     	
 		btn.setOnClickListener(l);
@@ -100,6 +102,10 @@ public class MainActivity extends Activity {
 				break;
 			case R.id.embarrassMakeSureButton:
 				intent=new Intent(context,EmbarrassDetailActivity.class);
+				startActivity(intent);
+				break;
+			case R.id.realface_button:
+				intent=new Intent(context,PlainLookActivity.class);
 				startActivity(intent);
 				break;
 

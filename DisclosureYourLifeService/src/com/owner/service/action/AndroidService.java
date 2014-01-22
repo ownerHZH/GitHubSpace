@@ -143,8 +143,8 @@ public class AndroidService extends ActionSupport implements ServletRequestAware
 	public void getUploadFile()
     {
 		int eid=0;//插入返回的主键ID
-		final String path =ServletActionContext.getServletContext().getRealPath("/");
-		final String spath=Constant.FileSavedPathString;// 图片所在服务器的路径
+		final String path =ServletActionContext.getServletContext().getRealPath("/")+"embarrassPictures\\";
+		final String spath=Constant.FileSavedPathString+"embarrassPictures/";// 图片所在服务器的路径
 		
 		List<Picture> pics=new ArrayList<Picture>();//保存上传图片的路径
 		Embarrass em=GsonTool.getGson().fromJson(embarrass,GsonTool.type_embarrass);
@@ -198,6 +198,11 @@ public class AndroidService extends ActionSupport implements ServletRequestAware
 				OutputStream output = null;// 输出流
 				InputStream input = null;// 输入流
 				System.out.println("====name===" + picturesFileName[i]);
+				File dir=new File(path);
+				if(!dir.exists())
+				{
+					dir.mkdirs();
+				}
 				File f = new File(path, picturesFileName[i]);
 				System.out.println("====·保存的全路径===" + path
 						+ picturesFileName[i]);

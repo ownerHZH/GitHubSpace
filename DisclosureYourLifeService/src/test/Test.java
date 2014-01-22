@@ -7,6 +7,7 @@ import com.owner.dao.IConsumeDAO;
 import com.owner.dao.IEmbarrassDAO;
 import com.owner.dao.IIncomeDAO;
 import com.owner.dao.IPictureDAO;
+import com.owner.dao.IPlainLookDAO;
 import com.owner.domain.Consume;
 import com.owner.domain.Embarrass;
 import com.owner.domain.Income;
@@ -16,6 +17,7 @@ import com.owner.impl.IConsumeDAOImpl;
 import com.owner.impl.IEmbarrassDAOImpl;
 import com.owner.impl.IIncomeDAOImpl;
 import com.owner.impl.IPictureDAOImpl;
+import com.owner.impl.IPlainLookDAOImpl;
 
 public class Test {
 
@@ -70,7 +72,7 @@ public class Test {
 	    {
 	    	System.out.println(pList.get(i).toString());
 	    }*/
-		IEmbarrassDAO dao=new IEmbarrassDAOImpl();
+		/*IEmbarrassDAO dao=new IEmbarrassDAOImpl();
 		IPictureDAO pdao=new IPictureDAOImpl();
         List<Embarrass> embarrassList = null;
 		embarrassList = dao.getAllEmbarrass(0,5);
@@ -82,7 +84,11 @@ public class Test {
 		for(int i=0;i<embarrassList.size();i++)
 		{
 			System.out.println(embarrassList.get(i).toString());
-		}
+		}*/
+		IPlainLookDAO dao = new IPlainLookDAOImpl();		
+	    //dao.updatePlainLookCount("17");
+	    
+	    dao.updatePlainLookBCount("17");
 	    
 	}
 
