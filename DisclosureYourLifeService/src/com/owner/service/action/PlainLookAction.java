@@ -52,6 +52,7 @@ public class PlainLookAction extends ActionSupport implements ServletRequestAwar
 	private PlainLook plainLookEntity;
 	
 	private String gobid;
+	private String whichForm;//是以何种排名方式显示数据  "good"  "bad"
 	public void updatePlainLookCount()
 	{
 		//传递的数据格式为：{ 例： 37+good or 37+bad }
@@ -189,7 +190,14 @@ public class PlainLookAction extends ActionSupport implements ServletRequestAwar
         List<PlainLook> plainLookList = null;
         JsonEntity jsonEntity=null;
 		try {
-			plainLookList = dao.getAllPlainLook();
+			if(whichForm.equals("good"))
+			{
+				plainLookList = dao.getAllPlainLook(pageno,pagesize);
+			}else
+			{
+				plainLookList = dao.getAllPlainLookByBcount(pageno, pagesize);
+			}
+			
 			jsonEntity=new JsonEntity();
 	        jsonEntity.setData(GsonTool.getGson().toJson(plainLookList).toString());
 	        jsonEntity.setMsg("获取数据成功");
@@ -286,5 +294,13 @@ public class PlainLookAction extends ActionSupport implements ServletRequestAwar
 
 	public void setGobid(String gobid) {
 		this.gobid = gobid;
+	}
+
+	public String getWhichForm() {
+		return whichForm;
+	}
+
+	public void setWhichForm(String whichForm) {
+		this.whichForm = whichForm;
 	}
 }

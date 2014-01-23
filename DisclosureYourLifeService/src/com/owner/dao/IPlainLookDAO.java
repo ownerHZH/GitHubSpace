@@ -9,7 +9,8 @@ public interface IPlainLookDAO {
 	 * 获取数据库中所有的图片列表信息
 	 * @return List<PlainLook>
 	 */
-	public List<PlainLook> getAllPlainLook();
+	public List<PlainLook> getAllPlainLook(int pageno,int pagesize);
+	public List<PlainLook> getAllPlainLookByBcount(int pageno,int pagesize);
 	
 	/**
 	 * 根据传递进来的图片实体添加到数据库

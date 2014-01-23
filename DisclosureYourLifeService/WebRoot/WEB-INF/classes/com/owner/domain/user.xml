@@ -29,10 +29,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     
     <insert id="insertUser" parameterType="User">  
         insert into User(UID,UPhone,UDevice)  
-        values(#{uid},#{phone},#{device})
-        <selectKey keyProperty="UID" resultType="int" order="AFTER">
-           SELECT LAST_INSERT_ID() AS uid;
-        </selectKey>         
+        values(#{uid},#{phone},#{device})        
     </insert> 
     
     <insert id="insertUserBatch" parameterType="User">  

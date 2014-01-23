@@ -86,9 +86,9 @@ public class Test {
 			System.out.println(embarrassList.get(i).toString());
 		}*/
 		IPlainLookDAO dao = new IPlainLookDAOImpl();		
-	    dao.updatePlainLookCount("17");
+	    //dao.updatePlainLookCount("1");
 	    
-	    //dao.updatePlainLookBCount("17");
+	    dao.updatePlainLookBCount("17");
 	    
 	}
 

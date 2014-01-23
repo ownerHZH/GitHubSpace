@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name="com.owner.disclosureyourlife.UILApplication"
@@ -22,62 +23,81 @@
         <activity
             android:name="com.owner.disclosureyourlife.MainActivity"
             android:label="@string/app_name" >
+            
+        </activity>
+        <activity
+            android:name="com.owner.disclosureyourlife.GetUserInfoActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name="com.owner.disclosureyourlife.ConsumeListActivity"
-            android:label="@string/title_activity_consume" >
+            android:label="@string/title_activity_consume" >            
         </activity>
+        
         <activity
             android:name="com.owner.disclosureyourlife.IncomeListActivity"
             android:label="@string/title_activity_income" >
         </activity>
+        
         <activity
             android:name="com.owner.disclosureyourlife.UploadOwnActivity"
             android:label="@string/title_activity_upload_own" >
         </activity>
+        
         <activity
             android:name="com.owner.disclosureyourlife.EmbarrassListActivity"
             android:label="@string/title_activity_embarrass_list" >
         </activity>
+        
         <activity
             android:name="com.owner.disclosureyourlife.ConsumeDetailActivity"
             android:label="@string/title_activity_consume_detail" >
         </activity>
+        
         <activity
             android:name="com.owner.disclosureyourlife.IncomeDetailActivity"
             android:label="@string/title_activity_income_detail" >
         </activity>
+        
         <activity
             android:name="com.owner.disclosureyourlife.EmbarrassDetailActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_embarrass_detail" >
         </activity>
+        
         <activity
             android:name="com.owner.disclosureyourlife.ImageGridActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
+        
         <activity
             android:name="com.owner.disclosureyourlife.SelectPicAlbumActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
+        
         <activity
             android:name="com.owner.disclosureyourlife.GalleryPage"
             android:theme="@android:style/Theme.NoTitleBar" />
+        
         <activity
             android:name="com.owner.disclosureyourlife.ImageListActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
+        
         <activity
             android:name="com.owner.disclosureyourlife.ImagePagerActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
+        
         <activity
             android:name="com.owner.disclosureyourlife.PlainLookActivity"
             android:label="@string/title_activity_plain_look" >
         </activity>
+        
     </application>
 
 </manifest>

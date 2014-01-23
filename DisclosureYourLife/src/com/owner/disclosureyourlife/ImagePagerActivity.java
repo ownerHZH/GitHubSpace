@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,9 +68,12 @@ public class ImagePagerActivity extends BaseActivity {
 	ViewPager pager;
 	List<String> imageUrls=new ArrayList<String>();
 	List<Integer> ids=new ArrayList<Integer>();
+	List<Integer> counts=new ArrayList<Integer>();
+	List<Integer> bcounts=new ArrayList<Integer>();
 	private Button back;
 
 	private TextView title;
+	private int isChoose=0;//赞与踩限制在一次，不可多次提交
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -83,6 +87,8 @@ public class ImagePagerActivity extends BaseActivity {
 		assert bundle != null;
 		imageUrls = bundle.getStringArrayList(Extra.IMAGES);
 		ids=bundle.getIntegerArrayList(Extra.IDS);
+		counts=bundle.getIntegerArrayList(Extra.COUNTS);
+		bcounts=bundle.getIntegerArrayList(Extra.BCOUNTS);
 		int pagerPosition = bundle.getInt(Extra.IMAGE_POSITION, 0);
 
 		if (savedInstanceState != null) {
@@ -137,8 +143,8 @@ public class ImagePagerActivity extends BaseActivity {
 			assert imageLayout != null;
 			ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image);
 			final ProgressBar spinner = (ProgressBar) imageLayout.findViewById(R.id.loading);
-			//RadioButton good=(RadioButton) imageLayout.findViewById(R.id.goodRadio);
-			//RadioButton bad=(RadioButton) imageLayout.findViewById(R.id.badRadio);
+			final RadioButton good=(RadioButton) imageLayout.findViewById(R.id.goodRadio);
+			final RadioButton bad=(RadioButton) imageLayout.findViewById(R.id.badRadio);
 			final RadioGroup radioGroup=(RadioGroup) imageLayout.findViewById(R.id.goodOrBadRadioGroup);
 
 			imageLoader.displayImage(images.get(position), imageView, options, new SimpleImageLoadingListener() {
@@ -175,6 +181,8 @@ public class ImagePagerActivity extends BaseActivity {
 				@Override
 				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 					spinner.setVisibility(View.GONE);
+					good.setText(counts.get(we)+"");
+					bad.setText(bcounts.get(we)+"");
 					radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 						
 						@Override
@@ -182,9 +190,13 @@ public class ImagePagerActivity extends BaseActivity {
 							switch(checkedId)
 							{
 								case R.id.goodRadio:
+									good.setText(counts.get(we)+1+"");
+									isChoose++;
 									push(ids.get(we),"good");							
 									break;
 								case R.id.badRadio:
+									bad.setText(bcounts.get(we)+1+"");
+									isChoose++;
 									push(ids.get(we),"bad");									
 									break;
 							}
@@ -216,23 +228,27 @@ public class ImagePagerActivity extends BaseActivity {
 	//赞与不赞更新数据库函数
     public void push(int id,String good_or_bad)
 	{
-		HttpClientService svr = new HttpClientService(AppConstants.UpdatePlainLookCount);
-		//参数
-		svr.addParameter("gobid",id+"+"+good_or_bad);
+    	if(isChoose==1||isChoose==2)
+    	{
+    		HttpClientService svr = new HttpClientService(AppConstants.UpdatePlainLookCount);
+    		//参数
+    		svr.addParameter("gobid",id+"+"+good_or_bad);
+    		
+    		HttpAndroidTask task = new HttpAndroidTask(context, svr,
+    				new HttpResponseHandler() {
+    				
+    					// 响应事件
+    					public void onResponse(Object obj) {						
+    						JsonEntity jsonEntity = GsonUtil.parseObj2JsonEntity(
+    								obj,context,false);
+    					}
+    				}, new HttpPreExecuteHandler() {
+    					public void onPreExecute(Context context) {												
+    					}
+    				});
+    		task.execute(new String[] {});
+    	}
 		
-		HttpAndroidTask task = new HttpAndroidTask(context, svr,
-				new HttpResponseHandler() {
-				
-					// 响应事件
-					public void onResponse(Object obj) {						
-						JsonEntity jsonEntity = GsonUtil.parseObj2JsonEntity(
-								obj,context,false);
-					}
-				}, new HttpPreExecuteHandler() {
-					public void onPreExecute(Context context) {												
-					}
-				});
-		task.execute(new String[] {});
 	}
 	
 private OnClickListener l=new OnClickListener() {

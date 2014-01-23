@@ -19,11 +19,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
+
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -38,6 +43,8 @@ import com.owner.httpgson.HttpAndroidTask;
 import com.owner.httpgson.HttpClientService;
 import com.owner.httpgson.HttpPreExecuteHandler;
 import com.owner.httpgson.HttpResponseHandler;
+import com.owner.pull.list.XListView;
+import com.owner.pull.list.XListView.IXListViewListener;
 import com.owner.tools.DialogUtil;
 import com.owner.tools.GsonUtil;
 import com.owner.tools.MyProgressDialog;
@@ -50,18 +57,30 @@ import java.util.List;
 /**
  * @author Sergey Tarasevich (nostra13[at]gmail[dot]com)
  */
-public class ImageListActivity extends AbsListViewBaseActivity {
+public class ImageListActivity extends AbsListViewBaseActivity implements IXListViewListener {
 
 	DisplayImageOptions options;
 
 	List<String> imageUrls=new ArrayList<String>();
 	List<Integer> ids=new ArrayList<Integer>();
+	List<Integer> count=new ArrayList<Integer>();
+	List<Integer> bcount=new ArrayList<Integer>();
 	private List<PlainLook> datalist=new ArrayList<PlainLook>();
 	private Context context=ImageListActivity.this;
 	private MyProgressDialog pdialog;
 
 	private ItemAdapter adapter;
-	private int pageindex;
+
+	private Handler mHandler;
+	private int pageno=0;
+	private int pagesize=10;
+	private int pageindex=0;
+	View view;
+
+	private Button change_form_button;
+	private final static String  GOOD="good";//选取以何种排名形式显示数据
+	private final static String  BAD="bad";
+	private String isWhichForm=GOOD;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -69,7 +88,8 @@ public class ImageListActivity extends AbsListViewBaseActivity {
 
 		//Bundle bundle = getIntent().getExtras();
 		//imageUrls = AppConstants.IMAGES;
-		getData(0,20,true);
+		getData(0,pagesize,true,GOOD);
+		mHandler = new Handler();
 
 		options = new DisplayImageOptions.Builder()
 			.showImageOnLoading(R.drawable.ic_stub)
@@ -80,14 +100,43 @@ public class ImageListActivity extends AbsListViewBaseActivity {
 			.considerExifParams(true)
 			.displayer(new RoundedBitmapDisplayer(20))
 			.build();
-
+        
+		view = LayoutInflater.from(this).inflate(R.layout.change_range_form_image_list_header,null,false);
+		change_form_button=(Button) view.findViewById(R.id.change_form);
+		change_form_button.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(isWhichForm.equals(GOOD))
+				{
+					isWhichForm=BAD;
+				}else if(isWhichForm.equals(BAD))
+				{
+					isWhichForm=GOOD;
+				}
+				pageno=0;
+				pagesize=10;
+				pageindex=0;
+				getData(0,pagesize,true,isWhichForm);
+			}
+		});
+		
 		listView = (ListView) findViewById(android.R.id.list);
+		((ListView) listView).addHeaderView(view, null, true);
+		
 		adapter=new ItemAdapter();
 		((ListView) listView).setAdapter(adapter);
+		((XListView) listView).setPullLoadEnable(true);
+		((XListView) listView).setXListViewListener(this);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				startImagePagerActivity(position);
+				if(id == -1) {  
+			        // 点击的是headerView或者footerView  
+			        return;  
+			    }  
+			    int realPosition=(int)id;
+				startImagePagerActivity(realPosition);
 			}
 		});
 	}
@@ -97,12 +146,13 @@ public class ImageListActivity extends AbsListViewBaseActivity {
 	 * pagesize 每次请求的条数
 	 * first   是否为第一次请求数据
 	 */
-	public void getData(int pageno,int pagesize,final boolean first)
+	public void getData(int pageno,int pagesize,final boolean first,String whichForm)
 	{
 		HttpClientService svr = new HttpClientService(AppConstants.PlainLookRequestAction);
 		//参数
 		svr.addParameter("pageno",pageno);
 		svr.addParameter("pagesize",pagesize);
+		svr.addParameter("whichForm",whichForm);
 		
 		HttpAndroidTask task = new HttpAndroidTask(context, svr,
 				new HttpResponseHandler() {
@@ -127,6 +177,8 @@ public class ImageListActivity extends AbsListViewBaseActivity {
 									datalist.clear();
 									imageUrls.clear();
 									ids.clear();
+									count.clear();
+									bcount.clear();
 								}
 								copyToList(tempList);//把tempList的数据保存到datalist当中
 								adapter.notifyDataSetChanged();
@@ -155,8 +207,42 @@ public class ImageListActivity extends AbsListViewBaseActivity {
 			datalist.add(tempList.get(i));
 			imageUrls.add(tempList.get(i).getPath());
 			ids.add(tempList.get(i).getId());
+			count.add(tempList.get(i).getCount());
+			bcount.add(tempList.get(i).getBcount());
 		}
 		
+	}
+	
+	private void onLoad() {
+		((XListView) listView).stopRefresh();
+		((XListView) listView).stopLoadMore();
+		((XListView) listView).setRefreshTime("刚刚");
+	}
+	
+	@Override
+	public void onRefresh() {
+		
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				getData(0,pagesize,true,isWhichForm);
+				onLoad();
+			}
+		}, 2000);
+	}
+	@Override
+	public void onLoadMore() {
+		pageindex++;
+		pageno=pageindex*pagesize;
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				getData(pageno,pagesize,false,isWhichForm);
+				//geneItems();
+				//mAdapter.notifyDataSetChanged();
+				onLoad();
+			}
+		}, 2000);
 	}
 
 	@Override
@@ -168,6 +254,8 @@ public class ImageListActivity extends AbsListViewBaseActivity {
 	private void startImagePagerActivity(int position) {
 		Intent intent = new Intent(this, ImagePagerActivity.class);
 		intent.putIntegerArrayListExtra(Extra.IDS, (ArrayList<Integer>) ids);
+		intent.putIntegerArrayListExtra(Extra.COUNTS, (ArrayList<Integer>) count);
+		intent.putIntegerArrayListExtra(Extra.BCOUNTS, (ArrayList<Integer>) bcount);
 		intent.putStringArrayListExtra(Extra.IMAGES,(ArrayList<String>) imageUrls);
 		intent.putExtra(Extra.IMAGE_POSITION, position);
 		startActivity(intent);
@@ -234,5 +322,5 @@ public class ImageListActivity extends AbsListViewBaseActivity {
 				}
 			}
 		}
-	}
+	}	
 }

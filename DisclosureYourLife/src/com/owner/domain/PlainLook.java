@@ -8,6 +8,8 @@ public class PlainLook implements Serializable{
     private int uid;
     private String path;
     private String title;
+    private int count;
+    private int bcount;
     
 	public int getId() {
 		return id;
@@ -33,9 +35,22 @@ public class PlainLook implements Serializable{
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	public int getBcount() {
+		return bcount;
+	}
+	public void setBcount(int bcount) {
+		this.bcount = bcount;
+	}
 	@Override
 	public String toString() {
 		return "PlainLook [id=" + id + ", uid=" + uid + ", path=" + path
 				+ ", title=" + title + "]";
-	}	
+	}
+	
 }

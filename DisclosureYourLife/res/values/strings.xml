@@ -55,11 +55,10 @@
     <string name="descr_image">Image</string>
     <string name="title_activity_plain_look">PlainLookActivity</string>
     <string name="menu_settings">Settings</string>
-    
     <string name="plain_look_title">晒自己照片</string>
     <string name="plain_look_view_pager_title">查看照片</string>
-    
     <string name="good">顶一个</string>
     <string name="bad">踩一脚</string>
+    <string name="title_activity_get_user_info">GetUserInfoActivity</string>
 
 </resources>

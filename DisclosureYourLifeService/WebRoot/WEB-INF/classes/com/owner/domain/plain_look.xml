@@ -10,7 +10,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             id as id, 
 	        uid as uid,
 	        path as path,
-	        title as title
+	        title as title,
+	        count as count,
+	        bcount as bcount
         from plain_look where id = #{id}  
     </select>  
     <select id="selectAll" resultType="PlainLook">  
@@ -18,15 +20,33 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             id as id, 
 	        uid as uid,
 	        path as path,
-	        title as title
-         from plain_look ORDER BY id DESC 
-    </select>  
+	        title as title,
+	        count as count,
+	        bcount as bcount
+         from plain_look ORDER BY count DESC 
+            limit #{pageno,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+    </select> 
+    
+    <select id="selectAllByBcount" resultType="PlainLook">  
+        select
+            id as id, 
+	        uid as uid,
+	        path as path,
+	        title as title,
+	        count as count,
+	        bcount as bcount
+         from plain_look ORDER BY bcount DESC 
+            limit #{pageno,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+    </select>
+     
     <select id="selectPlainLookByUid" resultType="PlainLook" parameterType="java.lang.String">  
         select 
             id as id, 
 	        uid as uid,
 	        path as path,
-	        title as title
+	        title as title,
+	        count as count,
+	        bcount as bcount
         from plain_look where uid = #{uid}  
     </select>  
     
@@ -50,12 +70,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
           </foreach> 
     </insert>
     
-    <update id="updatePlainLookCount">  
-        update plain_look set count=count+1 where id= #{gobid,jdbcType=INTEGER} 
+    <update id="updatePlainLookCount" parameterType="java.lang.Integer" >  
+        update plain_look set count=count+1 where id = #{gobid,jdbcType=INTEGER} 
     </update>
     
     <update id="updatePlainLookBCount">  
-        update plain_look set bcount=bcount+1 where id= #{gobid,jdbcType=INTEGER} 
+        update plain_look set bcount=bcount+1 where id = #{gobid,jdbcType=INTEGER} 
     </update> 
  
 </mapper>  

@@ -92,6 +92,8 @@ public class AppConstants {
 		public static final String IMAGES = "com.owner.constant.IMAGES";
 		public static final String IMAGE_POSITION = "com.owner.constant.IMAGE_POSITION";
 		public static final String IDS = "com.owner.constant.IMAGE_IDS";
+		public static final String COUNTS = "com.owner.constant.IMAGE_COUNTS";
+		public static final String BCOUNTS = "com.owner.constant.IMAGE_BCOUNTS";
 	}
 	
 	public static final String[] IMAGES = new String[] {

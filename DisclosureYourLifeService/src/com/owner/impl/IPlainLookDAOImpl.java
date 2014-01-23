@@ -19,12 +19,15 @@ public class IPlainLookDAOImpl implements IPlainLookDAO {
 	    
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<PlainLook> getAllPlainLook() {
+	public List<PlainLook> getAllPlainLook(int pageno,int pagesize) {
 		List<PlainLook> PlainLookList=null;
 		SqlSession session = null;
 		try {
 			session = sessionFactory.openSession(); 
-			PlainLookList=(List<PlainLook>)session.selectList("com.owner.domain.PlainLookMapper.selectAll");
+			Map<String, Integer> hashMap=new HashMap<String, Integer>();
+			hashMap.put("pageno", pageno);
+			hashMap.put("pagesize", pagesize);
+			PlainLookList=(List<PlainLook>)session.selectList("com.owner.domain.PlainLookMapper.selectAll",hashMap);
 		} finally
 		{
 			session.close();
@@ -100,6 +103,7 @@ public class IPlainLookDAOImpl implements IPlainLookDAO {
 			Map<String, String> hashMap=new HashMap<String, String>();
 			hashMap.put("gobid", gobid);
 			session.update("com.owner.domain.PlainLookMapper.updatePlainLookCount",hashMap);
+			session.commit();
 		} finally
 		{
 			session.close();
@@ -111,13 +115,31 @@ public class IPlainLookDAOImpl implements IPlainLookDAO {
 		SqlSession session = null;
 		try {
 			session = sessionFactory.openSession(); 
-			Map<String, String> hashMap=new HashMap<String, String>();
-			hashMap.put("gobid", gobid);
+			Map<String, Integer> hashMap=new HashMap<String, Integer>();
+			hashMap.put("gobid", Integer.parseInt(gobid));
 			session.update("com.owner.domain.PlainLookMapper.updatePlainLookBCount",hashMap);
+			session.commit();
 		} finally
 		{
 			session.close();
 		}
+	}
+
+	@Override
+	public List<PlainLook> getAllPlainLookByBcount(int pageno, int pagesize) {
+		List<PlainLook> plainLookList=null;
+		SqlSession session = null;
+		try {
+			session = sessionFactory.openSession(); 
+			Map<String, Integer> hashMap=new HashMap<String, Integer>();
+			hashMap.put("pageno", pageno);
+			hashMap.put("pagesize", pagesize);
+			plainLookList=(List<PlainLook>)session.selectList("com.owner.domain.PlainLookMapper.selectAllByBcount",hashMap);
+		} finally
+		{
+			session.close();
+		}
+		return plainLookList;
 	}
 
 }
