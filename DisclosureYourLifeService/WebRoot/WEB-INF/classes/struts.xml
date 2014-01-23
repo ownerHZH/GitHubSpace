@@ -66,6 +66,11 @@
       </action> 
       <action name="UpdatePlainLookCount" class="com.owner.service.action.PlainLookAction" method="updatePlainLookCount">
          <result type="stream" />
-      </action>    
+      </action>  
+      
+      <action name="AddUser" class="com.owner.service.action.UserAction" method="addUser">
+         <result type="json" />
+      </action>
+        
    </package>
 </struts>    

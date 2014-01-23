@@ -50,6 +50,29 @@ public class PhoneInfo {
 		return ProvidersName;
 	}
 	
+	public String getDeviceId()
+	{
+		String ProvidersName = "";
+		try{
+			ProvidersName=telephonyManager.getDeviceId();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return ProvidersName;
+	}
+	
+	public String getSimSerialNumber()
+	{
+		String ProvidersName = "";
+		try{
+			ProvidersName=telephonyManager.getSimSerialNumber();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return ProvidersName;
+	}
+	
+	
 	public String  getPhoneInfo(){
 		 TelephonyManager tm = (TelephonyManager)cxt.getSystemService(Context.TELEPHONY_SERVICE);
 	        StringBuilder sb = new StringBuilder();

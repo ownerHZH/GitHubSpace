@@ -23,7 +23,7 @@ public interface IUserDAO {
 	 * @param pid
 	 * @return 返回用户实体
 	 */
-	public User queryUserById(String uid);
+	public User queryUserById(User user);
 	
 	
 	/**

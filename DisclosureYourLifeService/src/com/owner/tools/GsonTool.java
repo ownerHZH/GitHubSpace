@@ -13,6 +13,7 @@ import com.owner.domain.EmbarrassComment;
 import com.owner.domain.Income;
 import com.owner.domain.IncomeComment;
 import com.owner.domain.PlainLook;
+import com.owner.domain.User;
 
 public class GsonTool {
 	 public static Gson getGson() {
@@ -37,5 +38,8 @@ public class GsonTool {
 	public static Type type_incomeComment = new TypeToken<IncomeComment>() {
 	}.getType();
 	public static Type type_embarrassComment = new TypeToken<EmbarrassComment>() {
+	}.getType();
+	
+	public static Type type_user = new TypeToken<User>() {
 	}.getType();
 }

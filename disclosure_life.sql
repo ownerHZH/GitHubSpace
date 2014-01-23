@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50527
 File Encoding         : 65001
 
-Date: 2014-01-16 17:57:21
+Date: 2014-01-23 17:21:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -107,7 +107,7 @@ CREATE TABLE `consume_comment` (
   KEY `id` (`id`,`cid`) USING BTREE,
   KEY `cid` (`cid`),
   CONSTRAINT `cid` FOREIGN KEY (`cid`) REFERENCES `consume` (`CID`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of consume_comment
@@ -127,6 +127,7 @@ INSERT INTO `consume_comment` VALUES ('12', '62', '回家呵呵看\n\n不催', n
 INSERT INTO `consume_comment` VALUES ('13', '62', '哈哈哈哈', null);
 INSERT INTO `consume_comment` VALUES ('14', '63', '规范化时间', '2014-01-16 17:21:38');
 INSERT INTO `consume_comment` VALUES ('15', '63', '基本vjj\n', '2014-01-16 17:56:51');
+INSERT INTO `consume_comment` VALUES ('16', '63', '韩国回家', '2014-01-22 14:49:59');
 
 -- ----------------------------
 -- Table structure for `embarrass`
@@ -141,7 +142,7 @@ CREATE TABLE `embarrass` (
   PRIMARY KEY (`EID`),
   KEY `FK_user_embarrass` (`UID`),
   CONSTRAINT `FK_user_embarrass` FOREIGN KEY (`UID`) REFERENCES `user` (`UID`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='糗事儿';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='糗事儿';
 
 -- ----------------------------
 -- Records of embarrass
@@ -170,6 +171,10 @@ INSERT INTO `embarrass` VALUES ('21', '1', 'hh', '', null);
 INSERT INTO `embarrass` VALUES ('22', '1', 'hj', 'hj', 'http://192.168.0.101:8080/DisclosureYourLife/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381731642_2F201310141430453_listthumb_iphone4.jpg');
 INSERT INTO `embarrass` VALUES ('23', '1', 'gg', 'gg', 'http://192.168.1.150:8080/DisclosureYourLife/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381894316_2F201310161137212_listthumb_iphone4.jpg');
 INSERT INTO `embarrass` VALUES ('24', '1', 'hb', 'hb', null);
+INSERT INTO `embarrass` VALUES ('25', '1', '过程解决', '符合个vh', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1383016035_2F201310291108543_header_iphone4.jpg');
+INSERT INTO `embarrass` VALUES ('26', '1', '将vcj', '肺结核', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1382335669_2F201310211409062_listthumb_iphone4.jpg');
+INSERT INTO `embarrass` VALUES ('27', '1', '一个胡', '规范关于', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381894316_2F201310161137212_listthumb_iphone4.jpg');
+INSERT INTO `embarrass` VALUES ('28', '1', '个感觉', '头发用户', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1383016035_2F201310291108543_header_iphone4.jpg');
 
 -- ----------------------------
 -- Table structure for `embarrass_comment`
@@ -184,7 +189,7 @@ CREATE TABLE `embarrass_comment` (
   KEY `eid` (`eid`),
   KEY `id` (`id`,`eid`) USING BTREE,
   CONSTRAINT `eid` FOREIGN KEY (`eid`) REFERENCES `embarrass` (`EID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of embarrass_comment
@@ -193,6 +198,8 @@ INSERT INTO `embarrass_comment` VALUES ('1', '23', '个呵呵', null);
 INSERT INTO `embarrass_comment` VALUES ('2', '23', '规划vh\nvhjj', null);
 INSERT INTO `embarrass_comment` VALUES ('3', '23', '和此次规范化就\n\n\n\n\n符合基金会的人的的人的的人的的人的的人的的人的的人的的人的的人的的人的的人的的人的的人的', null);
 INSERT INTO `embarrass_comment` VALUES ('4', '2', '呵呵不过如此', null);
+INSERT INTO `embarrass_comment` VALUES ('5', '3', '呵呵就解决', '2014-01-17 14:55:24');
+INSERT INTO `embarrass_comment` VALUES ('6', '28', '风风火火车', '2014-01-22 13:50:27');
 
 -- ----------------------------
 -- Table structure for `income`
@@ -266,7 +273,7 @@ CREATE TABLE `picture` (
   PRIMARY KEY (`PID`),
   KEY `EID` (`EID`) USING BTREE,
   CONSTRAINT `picture_ibfk_1` FOREIGN KEY (`EID`) REFERENCES `embarrass` (`EID`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of picture
@@ -290,6 +297,52 @@ INSERT INTO `picture` VALUES ('19', '19', 'http://192.168.1.150:8080/DisclosureY
 INSERT INTO `picture` VALUES ('20', '22', 'http://192.168.0.101:8080/DisclosureYourLife/', 'cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381731642_2F201310141430453_listthumb_iphone4.jpg', 'http://192.168.0.101:8080/DisclosureYourLife/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381731642_2F201310141430453_listthumb_iphone4.jpg');
 INSERT INTO `picture` VALUES ('21', '22', 'http://192.168.0.101:8080/DisclosureYourLife/', 'cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381805498_2F201310151058258_listthumb_iphone4.jpg', 'http://192.168.0.101:8080/DisclosureYourLife/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381805498_2F201310151058258_listthumb_iphone4.jpg');
 INSERT INTO `picture` VALUES ('22', '23', 'http://192.168.1.150:8080/DisclosureYourLife/', 'cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381894316_2F201310161137212_listthumb_iphone4.jpg', 'http://192.168.1.150:8080/DisclosureYourLife/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381894316_2F201310161137212_listthumb_iphone4.jpg');
+INSERT INTO `picture` VALUES ('23', '25', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/', 'cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1383016035_2F201310291108543_header_iphone4.jpg', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1383016035_2F201310291108543_header_iphone4.jpg');
+INSERT INTO `picture` VALUES ('24', '25', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/', 'cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1382335979_2F201310211414088_listthumb_iphone4.jpg', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1382335979_2F201310211414088_listthumb_iphone4.jpg');
+INSERT INTO `picture` VALUES ('25', '25', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/', 'cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381895394_2F201310161150181_listthumb_iphone4.jpg', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381895394_2F201310161150181_listthumb_iphone4.jpg');
+INSERT INTO `picture` VALUES ('26', '26', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/', 'cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1382335669_2F201310211409062_listthumb_iphone4.jpg', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1382335669_2F201310211409062_listthumb_iphone4.jpg');
+INSERT INTO `picture` VALUES ('27', '27', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/', 'cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381894316_2F201310161137212_listthumb_iphone4.jpg', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381894316_2F201310161137212_listthumb_iphone4.jpg');
+INSERT INTO `picture` VALUES ('28', '27', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/', 'cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1382335979_2F201310211414088_listthumb_iphone4.jpg', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1382335979_2F201310211414088_listthumb_iphone4.jpg');
+INSERT INTO `picture` VALUES ('29', '28', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/', 'cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1383016035_2F201310291108543_header_iphone4.jpg', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1383016035_2F201310291108543_header_iphone4.jpg');
+INSERT INTO `picture` VALUES ('30', '28', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/', 'cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381894157_2F201310161131334_listthumb_iphone4.jpg', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381894157_2F201310161131334_listthumb_iphone4.jpg');
+INSERT INTO `picture` VALUES ('31', '28', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/', 'cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381895394_2F201310161150181_listthumb_iphone4.jpg', 'http://192.168.1.150:8080/DisclosureYourLife/embarrassPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381895394_2F201310161150181_listthumb_iphone4.jpg');
+
+-- ----------------------------
+-- Table structure for `plain_look`
+-- ----------------------------
+DROP TABLE IF EXISTS `plain_look`;
+CREATE TABLE `plain_look` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) DEFAULT NULL,
+  `path` text,
+  `title` text,
+  `count` int(11) DEFAULT '0',
+  `bcount` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of plain_look
+-- ----------------------------
+INSERT INTO `plain_look` VALUES ('1', '1', 'http://192.168.1.150:8080/DisclosureYourLife/201310211426338_cross_iphone4.jpg', 'dd', '2', '0');
+INSERT INTO `plain_look` VALUES ('2', '1', 'http://192.168.1.150:8080/DisclosureYourLife/201310211426338_cross_iphone4.jpg', 'dd', '1', '0');
+INSERT INTO `plain_look` VALUES ('5', '1', 'http://192.168.1.150:8080/DisclosureYourLife/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381894316_2F201310161137212_listthumb_iphone4.jpg', '同样', '1', '0');
+INSERT INTO `plain_look` VALUES ('6', '1', 'http://192.168.1.150:8080/DisclosureYourLife/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1382335979_2F201310211414088_listthumb_iphone4.jpg', '同样', '1', '0');
+INSERT INTO `plain_look` VALUES ('7', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381805498_2F201310151058258_listthumb_iphone4.jpg', '会更好', '1', '0');
+INSERT INTO `plain_look` VALUES ('8', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1383016035_2F201310291108543_header_iphone4.jpg', '会更好', '1', '0');
+INSERT INTO `plain_look` VALUES ('9', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381731642_2F201310141430453_listthumb_iphone4.jpg', '会更好', '1', '0');
+INSERT INTO `plain_look` VALUES ('10', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381734234_2F201310141519069_listthumb_iphone4.jpg', '规划局', '1', '0');
+INSERT INTO `plain_look` VALUES ('11', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381805498_2F201310151058258_listthumb_iphone4.jpg', '规划局', '1', '0');
+INSERT INTO `plain_look` VALUES ('12', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381731642_2F201310141430453_listthumb_iphone4.jpg', '规划局', '1', '0');
+INSERT INTO `plain_look` VALUES ('13', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381743819_2F201310141743536.jpg', '韩国回家', '6', '2');
+INSERT INTO `plain_look` VALUES ('14', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381743819_2F201310141743475.jpg', '韩国回家', '4', '3');
+INSERT INTO `plain_look` VALUES ('15', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381743819_2F201310141743511.jpg', '韩国回家', '3', '1');
+INSERT INTO `plain_look` VALUES ('16', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381743819_2F201310141743494.jpg', '韩国回家', '3', '1');
+INSERT INTO `plain_look` VALUES ('17', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/201310161105160_cross_iphone4.jpg', '恢复回家', '11', '6');
+INSERT INTO `plain_look` VALUES ('18', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/201310161113219_cross_iphone4.jpg', '恢复回家', '3', '1');
+INSERT INTO `plain_look` VALUES ('19', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/1373877356.png', 'jvhj', '3', '3');
+INSERT INTO `plain_look` VALUES ('20', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/201310211426338_cross_iphone4.jpg', 'jvhj', '3', '3');
 
 -- ----------------------------
 -- Table structure for `user`
@@ -300,9 +353,10 @@ CREATE TABLE `user` (
   `UPhone` varchar(20) DEFAULT NULL,
   `UDevice` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`UID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户';
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
 INSERT INTO `user` VALUES ('1', '13637823045', null);
+INSERT INTO `user` VALUES ('2', '+8613637823045', '866917010602959');

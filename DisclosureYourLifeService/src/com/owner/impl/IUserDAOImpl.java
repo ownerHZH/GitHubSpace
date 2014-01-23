@@ -38,8 +38,9 @@ public class IUserDAOImpl implements IUserDAO {
 		int f=0;
 		try {
 			session=sessionFactory.openSession();
-			f=session.insert("com.owner.domain.UserMapper.insertUser",user);
+			session.insert("com.owner.domain.UserMapper.insertUser",user);
 			session.commit();
+			f=user.getUid();
 		} finally
 		{
 			session.close();
@@ -48,18 +49,20 @@ public class IUserDAOImpl implements IUserDAO {
 	}
 
 	@Override
-	public User queryUserById(String uid) {
+	public User queryUserById(User user) {
 		SqlSession session = null;
-		User User=new User();
-		int f=0;
+		User u=new User();
 		try {
 			session=sessionFactory.openSession();
-			User=(User) session.selectOne("com.owner.domain.UserMapper.selectUser", uid);
+			Map<String,String> hashMap=new HashMap<String, String>();
+			hashMap.put("phone", user.getPhone());
+			hashMap.put("device", user.getDevice());
+			u=(User) session.selectOne("com.owner.domain.UserMapper.selectUser", hashMap);
 		} finally
 		{
 			session.close();
 		}
-		return User;
+		return u;
 	}
 
 	@Override
