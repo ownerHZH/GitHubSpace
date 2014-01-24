@@ -20,7 +20,10 @@ import com.owner.tools.Utils;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -77,6 +80,7 @@ public class ConsumeDetailActivity extends Activity {
     
     private CatalogSpinnerAdapter catalogSpinnerAdapter;
     private PopupWindow mPopupWindow=null;
+    String zItemName,zItemMoney;//自定义的名称与金钱数
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -128,7 +132,8 @@ public class ConsumeDetailActivity extends Activity {
 			submit=(Button) findViewById(R.id.submitButton);
 			
 			items=new ArrayList<String>();
-			items.add("选总共，就不分小项");
+			items.add("月消费项目");
+			items.add("+自定义+");
 			items.add("买衣物");
 			items.add("买食物");
 			items.add("送礼物");
@@ -149,13 +154,19 @@ public class ConsumeDetailActivity extends Activity {
 		@Override
 		public void onItemSelected(AdapterView<?> parent, View view,
 				int position, long id) {
-			if(position!=0)
+			catalogSpinner.setSelection(0);
+			if(position!=0)				
 			{   
-				//根据Spinner的选择动态创建组建
-				Utils.createModule(context,items,position,itemContainer,FLAG);
-				submit.setVisibility(View.VISIBLE);				
+				if(items.get(position).equals("+自定义+"))
+				{
+					showDialog();					
+				}else
+				{
+					//根据Spinner的选择动态创建组建
+					Utils.createModule(context,items,position,itemContainer,FLAG);						
+				}	
+				submit.setVisibility(View.VISIBLE);
 			}
-			
 		}		
 
 		@Override
@@ -165,36 +176,63 @@ public class ConsumeDetailActivity extends Activity {
 		}
 	};
 	
-	//显示弹出窗口
-		private void showPopWindow() {
+	private void showDialog()
+	{
+		View view=getLayoutInflater()
+				.inflate(R.layout.consume_spinner_add_item_layout,null);
+		final EditText nameEditText=(EditText) view.findViewById(R.id.add_item_name_editText);
+		final EditText numberEditText=(EditText) view.findViewById(R.id.add_item_number_editText);
+		final Builder alertDialogBuilder=new AlertDialog.Builder(context);
+		alertDialogBuilder.setTitle("自定义信息")
+          .setView(view)
+          .setPositiveButton("确定", new DialogInterface.OnClickListener() { 
+        	  
+           @Override
+           public void onClick(DialogInterface dialoginterface, int i){ 
+        	   List<String> datas=new ArrayList<String>();
+			   datas.add(0, nameEditText.getText().toString());
+			   datas.add(1, numberEditText.getText().toString());
+			   Utils.createModule(context,datas,0,itemContainer,0x11);
+            } 
+           }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
 			
-			View view=getLayoutInflater()
-					.inflate(R.layout.consume_spinner_add_item_layout,null);
-			if(mPopupWindow==null)
-			{
-				mPopupWindow=new PopupWindow(view,
-						LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
 			}
-			mPopupWindow.setFocusable(true);//设置获取焦点		
-			//mPopupWindow.setBackgroundDrawable(new BitmapDrawable());//为了让在外点击消失弹出框
-			//mPopupWindow.setOutsideTouchable(true);// 设置允许在外点击消失 
-			mPopupWindow.setAnimationStyle(R.style.AnimationPreview);//设置弹窗进入与退出的动画效果
-			mPopupWindow.showAtLocation(catalogSpinner, Gravity.CENTER, 0, 0);//showAtLocation(null, Gravity.CENTER, 0, 0);
-			
-			//按钮
-			Button okBtn=(Button) view.findViewById(R.id.add_item_button_ok);
-			Button okCancel=(Button) view.findViewById(R.id.add_item_button_cancel);
-			EditText nameEditText=(EditText) view.findViewById(R.id.add_item_name_editText);
-			EditText numberEditText=(EditText) view.findViewById(R.id.add_item_number_editText);
-			okCancel.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					mPopupWindow.dismiss();
-					mPopupWindow=null;
-				}
-			});
+		}).show();
+	}
+	
+	//显示弹出窗口
+	/*private void showPopWindow() {
+		
+		View view=getLayoutInflater()
+				.inflate(R.layout.consume_spinner_add_item_layout,null);
+		if(mPopupWindow==null)
+		{
+			mPopupWindow=new PopupWindow(view,
+					LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
 		}
+		mPopupWindow.setFocusable(true);//设置获取焦点		
+		//mPopupWindow.setBackgroundDrawable(new BitmapDrawable());//为了让在外点击消失弹出框
+		//mPopupWindow.setOutsideTouchable(true);// 设置允许在外点击消失 
+		mPopupWindow.setAnimationStyle(R.style.AnimationPreview);//设置弹窗进入与退出的动画效果
+		mPopupWindow.showAtLocation(catalogSpinner, Gravity.CENTER, 0, 0);//showAtLocation(null, Gravity.CENTER, 0, 0);
+		
+		//按钮
+		Button okBtn=(Button) view.findViewById(R.id.add_item_button_ok);
+		Button okCancel=(Button) view.findViewById(R.id.add_item_button_cancel);
+		EditText nameEditText=(EditText) view.findViewById(R.id.add_item_name_editText);
+		EditText numberEditText=(EditText) view.findViewById(R.id.add_item_number_editText);
+		okCancel.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mPopupWindow.dismiss();
+				mPopupWindow=null;
+			}
+		});
+	}*/
 	
 	//按钮单机监视器
 	private OnClickListener l=new OnClickListener() {

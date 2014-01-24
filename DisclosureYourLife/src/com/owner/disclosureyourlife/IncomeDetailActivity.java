@@ -22,7 +22,10 @@ import com.owner.tools.Utils;
 import android.os.Bundle;
 import android.os.Handler;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -119,7 +122,8 @@ public class IncomeDetailActivity extends Activity {
 			submit=(Button) findViewById(R.id.submitButton);
 			
 			items=new ArrayList<String>();
-			items.add("选总共，就不分小项");
+			items.add("月收入项目");
+			items.add("+自定义+");
 			items.add("一工资");
 			items.add("二工资");
 			items.add("三工资");
@@ -138,9 +142,17 @@ public class IncomeDetailActivity extends Activity {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
-				if(position!=0)
-				{
-					Utils.createModule(context,items,position,itemContainer,FLAG);
+				catalogSpinner.setSelection(0);
+				if(position!=0)				
+				{   
+					if(items.get(position).equals("+自定义+"))
+					{
+						showDialog();					
+					}else
+					{
+						//根据Spinner的选择动态创建组建
+						Utils.createModule(context,items,position,itemContainer,FLAG);						
+					}	
 					submit.setVisibility(View.VISIBLE);
 				}
 				
@@ -179,6 +191,33 @@ public class IncomeDetailActivity extends Activity {
 			}
 		}
 	};
+	
+	private void showDialog()
+	{
+		View view=getLayoutInflater()
+				.inflate(R.layout.consume_spinner_add_item_layout,null);
+		final EditText nameEditText=(EditText) view.findViewById(R.id.add_item_name_editText);
+		final EditText numberEditText=(EditText) view.findViewById(R.id.add_item_number_editText);
+		final Builder alertDialogBuilder=new AlertDialog.Builder(context);
+		alertDialogBuilder.setTitle("自定义信息")
+          .setView(view)
+          .setPositiveButton("确定", new DialogInterface.OnClickListener() { 
+        	  
+           @Override
+           public void onClick(DialogInterface dialoginterface, int i){ 
+        	   List<String> datas=new ArrayList<String>();
+			   datas.add(0, nameEditText.getText().toString());
+			   datas.add(1, numberEditText.getText().toString());
+			   Utils.createModule(context,datas,0,itemContainer,0x11);
+            } 
+           }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		}).show();
+	}
 	
 	//获取网络评论信息的runnable
 		private Runnable receiveCommentRunnable=new Runnable() {

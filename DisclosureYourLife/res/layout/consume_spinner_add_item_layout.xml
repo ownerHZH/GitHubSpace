@@ -3,7 +3,7 @@
     style="@drawable/popup_window_add_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/popwindow_bg"
+    android:background="#cccc"
     android:gravity="top|center"
     android:orientation="vertical"
     android:padding="20dp" >
@@ -24,7 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:ems="10" />
+            android:ems="10"
+            android:hint="消费的小项" />
 
     </LinearLayout>
     
@@ -45,30 +46,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:hint="消费的金钱数"
             android:inputType="numberDecimal" >
 
             <requestFocus />
         </EditText>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal" >
-
-        <Button
-            android:id="@+id/add_item_button_ok"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="确定" />
-
-        <Button
-            android:id="@+id/add_item_button_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:text="取消" />
 
     </LinearLayout>
 

@@ -39,6 +39,10 @@ public class Utils {
 			editText.setHint(context.getString(R.string.consume_module_hint));
 		}else if (flag==1) {
 			editText.setHint(context.getString(R.string.income_module_hint));
+		}else
+		{
+			editText.setHint(context.getString(R.string.consume_module_hint));
+			editText.setText(items.get(1));//自定义数据显示 items.get(0==name)  items.get(1==money)
 		}
 		
 		//控制输入数字
