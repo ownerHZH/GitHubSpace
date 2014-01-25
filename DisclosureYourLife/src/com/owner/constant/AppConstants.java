@@ -13,6 +13,7 @@ import com.owner.domain.Income;
 import com.owner.domain.IncomeComment;
 import com.owner.domain.Picture;
 import com.owner.domain.PlainLook;
+import com.owner.domain.Spinner;
 import com.owner.domain.User;
 import com.owner.tools.GsonUtil;
 
@@ -25,7 +26,7 @@ public class AppConstants {
 	public static User USER;
 	
 	//服务器所在链接
-	public static String HttpHostAdress="http://192.168.1.150:8080/DisclosureYourLife/";
+	public static String HttpHostAdress="http://192.168.0.102:8080/DisclosureYourLife/";
 	
 	public static String TARGET_NOT_FOUND_EXCEPTION = "Target host must not be null";
 	public static String HTTPHOST_CONNECT_EXCEPTION = "HttpHostConnectException";
@@ -69,6 +70,8 @@ public class AppConstants {
 	public static String UpdatePlainLookCount=HttpHostAdress+"UpdatePlainLookCount.action";
 	//添加用户action
 	public static String AddUserAction=HttpHostAdress+"AddUser.action";
+	//获取Spinner数据的action
+	public static String SpinnerAction=HttpHostAdress+"GetSpinner.action";
 	
 	public static Type type_consumeList = new TypeToken<List<Consume>>() {
 	}.getType();
@@ -88,6 +91,8 @@ public class AppConstants {
 	public static Type type_plainLookList = new TypeToken<List<PlainLook>>() {
 	}.getType();
 	public static Type type_user = new TypeToken<User>() {
+	}.getType();
+	public static Type type_spinnerList= new TypeToken<List<Spinner>>() {
 	}.getType();
 
 	public static class Config {

@@ -16,6 +16,7 @@ import com.owner.httpgson.HttpPreExecuteHandler;
 import com.owner.httpgson.HttpResponseHandler;
 import com.owner.tools.GsonUtil;
 import com.owner.tools.MyProgressDialog;
+import com.owner.tools.SpinnerDb;
 import com.owner.tools.Utils;
 
 import android.os.Bundle;
@@ -132,13 +133,25 @@ public class ConsumeDetailActivity extends Activity {
 			submit=(Button) findViewById(R.id.submitButton);
 			
 			items=new ArrayList<String>();
-			items.add("月消费项目");
-			items.add("+自定义+");
-			items.add("买衣物");
-			items.add("买食物");
-			items.add("送礼物");
-			items.add("交通费");
-			items.add("总消费");
+
+			/*ArrayList<String> iStrings=new ArrayList<String>();
+			iStrings.add("月消费项目");
+			iStrings.add("+自定义+");
+			iStrings.add("买衣物");
+			iStrings.add("买食物");
+			iStrings.add("送礼物");
+			iStrings.add("交通费");
+			iStrings.add("总消费");
+			
+			SpinnerDb db1=new SpinnerDb(context);
+			db1.insert(1, iStrings);
+			db1.close();*/
+			
+			//从数据库获取数据
+			SpinnerDb db=new SpinnerDb(context);
+			items=db.select(1);
+			db.close();
+			
 			catalogSpinnerAdapter=new CatalogSpinnerAdapter(context,items,FLAG);
 			catalogSpinner.setAdapter(catalogSpinnerAdapter);			
 			catalogSpinner.setOnItemSelectedListener(itemSelected);
@@ -176,6 +189,7 @@ public class ConsumeDetailActivity extends Activity {
 		}
 	};
 	
+	//显示填写自定义的项
 	private void showDialog()
 	{
 		View view=getLayoutInflater()

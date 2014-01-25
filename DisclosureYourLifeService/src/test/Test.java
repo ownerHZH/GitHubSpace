@@ -8,16 +8,19 @@ import com.owner.dao.IEmbarrassDAO;
 import com.owner.dao.IIncomeDAO;
 import com.owner.dao.IPictureDAO;
 import com.owner.dao.IPlainLookDAO;
+import com.owner.dao.ISpinnerDAO;
 import com.owner.domain.Consume;
 import com.owner.domain.Embarrass;
 import com.owner.domain.Income;
 import com.owner.domain.JsonEntity;
 import com.owner.domain.Picture;
+import com.owner.domain.Spinner;
 import com.owner.impl.IConsumeDAOImpl;
 import com.owner.impl.IEmbarrassDAOImpl;
 import com.owner.impl.IIncomeDAOImpl;
 import com.owner.impl.IPictureDAOImpl;
 import com.owner.impl.IPlainLookDAOImpl;
+import com.owner.impl.ISpinnerDAOImpl;
 
 public class Test {
 
@@ -85,11 +88,46 @@ public class Test {
 		{
 			System.out.println(embarrassList.get(i).toString());
 		}*/
-		IPlainLookDAO dao = new IPlainLookDAOImpl();		
+		/*IPlainLookDAO dao = new IPlainLookDAOImpl();		
 	    //dao.updatePlainLookCount("1");
 	    
-	    dao.updatePlainLookBCount("17");
-	    
+	    dao.updatePlainLookBCount("17");*/
+		
+		/*iStrings.add("月消费项目");
+		iStrings.add("+自定义+");
+		iStrings.add("买衣物");
+		iStrings.add("买食物");
+		iStrings.add("送礼物");
+		iStrings.add("交通费");
+		iStrings.add("总消费");*/
+		
+		/*items.add("月收入项目");
+		items.add("+自定义+");
+		items.add("一工资");
+		items.add("二工资");
+		items.add("三工资");
+		items.add("其他");
+		items.add("总共");*/
+		ISpinnerDAO dao=new ISpinnerDAOImpl();
+		List<Spinner> spinners = new ArrayList<Spinner>();
+		spinners.add(new Spinner(1,"月消费项目"));
+		spinners.add(new Spinner(1,"+自定义+"));
+		spinners.add(new Spinner(1,"买衣物"));
+		spinners.add(new Spinner(1,"买食物"));
+		spinners.add(new Spinner(1,"送礼物"));
+		spinners.add(new Spinner(1,"交通费"));
+		spinners.add(new Spinner(1,"总消费"));
+		
+		spinners.add(new Spinner(2,"月收入项目"));
+		spinners.add(new Spinner(2,"+自定义+"));
+		spinners.add(new Spinner(2,"一工资"));
+		spinners.add(new Spinner(2,"二工资"));
+		spinners.add(new Spinner(2,"三工资"));
+		spinners.add(new Spinner(2,"其他"));
+		spinners.add(new Spinner(2,"总共"));
+		dao.insertSpinner(spinners);
+		
+		//System.out.println(dao.getAllSpinner().toString());
 	}
 
 }

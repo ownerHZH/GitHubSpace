@@ -11,6 +11,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper
 	final String CREATE_TABLE_SQL =
 		"create table picture(_id integer primary " +
 		"key autoincrement , eid , pic)";
+	final String CREATE_TABLE_SPINNER_ITEM_SQL =
+			"create table spinner(_id integer primary " +
+			"key autoincrement , sid integer, value)";
 	
 	public MyDatabaseHelper(Context context)
 	{
@@ -19,7 +22,19 @@ public class MyDatabaseHelper extends SQLiteOpenHelper
 	@Override
 	public void onCreate(SQLiteDatabase db)
 	{
-		db.execSQL(CREATE_TABLE_SQL);
+		db.beginTransaction();
+		try
+		{
+			db.execSQL(CREATE_TABLE_SQL);
+			db.execSQL(CREATE_TABLE_SPINNER_ITEM_SQL);
+			//设置事务标志为成功，当结束事务时就会提交事务
+			db.setTransactionSuccessful();
+		}
+		finally
+		{
+			//结束事务
+			db.endTransaction();
+		}
 	}
 	@Override
 	public void onUpgrade(SQLiteDatabase db

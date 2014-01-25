@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50527
 File Encoding         : 65001
 
-Date: 2014-01-23 17:21:34
+Date: 2014-01-25 21:20:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -213,7 +213,7 @@ CREATE TABLE `income` (
   PRIMARY KEY (`IID`),
   KEY `FK_user_income` (`UID`),
   CONSTRAINT `FK_user_income` FOREIGN KEY (`UID`) REFERENCES `user` (`UID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='收入单';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='收入单';
 
 -- ----------------------------
 -- Records of income
@@ -227,6 +227,7 @@ INSERT INTO `income` VALUES ('6', '1', '买房子4', '2040');
 INSERT INTO `income` VALUES ('7', '1', '买房子5', '2050');
 INSERT INTO `income` VALUES ('8', '1', '买房子1', '2001');
 INSERT INTO `income` VALUES ('9', '1', '总共', '7');
+INSERT INTO `income` VALUES ('10', '2', 'tg', '56');
 
 -- ----------------------------
 -- Table structure for `income_comment`
@@ -343,6 +344,35 @@ INSERT INTO `plain_look` VALUES ('17', '1', 'http://192.168.1.150:8080/Disclosur
 INSERT INTO `plain_look` VALUES ('18', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/201310161113219_cross_iphone4.jpg', '恢复回家', '3', '1');
 INSERT INTO `plain_look` VALUES ('19', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/1373877356.png', 'jvhj', '3', '3');
 INSERT INTO `plain_look` VALUES ('20', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/201310211426338_cross_iphone4.jpg', 'jvhj', '3', '3');
+
+-- ----------------------------
+-- Table structure for `spinner`
+-- ----------------------------
+DROP TABLE IF EXISTS `spinner`;
+CREATE TABLE `spinner` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sid` int(11) DEFAULT NULL,
+  `value` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of spinner
+-- ----------------------------
+INSERT INTO `spinner` VALUES ('15', '1', '月消费项目');
+INSERT INTO `spinner` VALUES ('16', '1', '+自定义+');
+INSERT INTO `spinner` VALUES ('17', '1', '买衣物');
+INSERT INTO `spinner` VALUES ('18', '1', '买食物');
+INSERT INTO `spinner` VALUES ('19', '1', '送礼物');
+INSERT INTO `spinner` VALUES ('20', '1', '交通费');
+INSERT INTO `spinner` VALUES ('21', '1', '总消费');
+INSERT INTO `spinner` VALUES ('22', '2', '月收入项目');
+INSERT INTO `spinner` VALUES ('23', '2', '+自定义+');
+INSERT INTO `spinner` VALUES ('24', '2', '一工资');
+INSERT INTO `spinner` VALUES ('25', '2', '二工资');
+INSERT INTO `spinner` VALUES ('26', '2', '三工资');
+INSERT INTO `spinner` VALUES ('27', '2', '其他');
+INSERT INTO `spinner` VALUES ('28', '2', '总共');
 
 -- ----------------------------
 -- Table structure for `user`

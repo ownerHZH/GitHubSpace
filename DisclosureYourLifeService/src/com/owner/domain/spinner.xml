@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.owner.domain.SpinnerMapper">  
+  
+    <select id="selectAll" resultType="Spinner" >  
+        select
+            id as id, 
+	        sid as sid,
+	        value as value
+         from spinner  
+    </select>     
+    
+    <insert id="insertSpinner" parameterType="Spinner" keyProperty="id" useGeneratedKeys="true">  
+        insert into spinner(id,sid,value)  
+        values(#{id,jdbcType=INTEGER},#{sid,jdbcType=INTEGER},#{value,jdbcType=VARCHAR})        
+    </insert> 
+    
+    <insert id="insertSpinnerBatch" parameterType="Spinner">  
+        insert into spinner(id,sid,value)  
+        values
+          <foreach collection="spinners" item="item" index="index" separator=",">
+               (#{item.id,jdbcType=INTEGER},#{item.sid,jdbcType=INTEGER},#{item.value,jdbcType=VARCHAR})
+          </foreach> 
+    </insert>
+    
+    <update id="updateSpinner" parameterType="Spinner">  
+        update spinner set id=#{id},sid=#{sid},value=#{value}  
+        where id=#{id}  
+    </update>  
+</mapper>  
+

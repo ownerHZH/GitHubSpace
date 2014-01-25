@@ -17,6 +17,7 @@ import com.owner.httpgson.HttpPreExecuteHandler;
 import com.owner.httpgson.HttpResponseHandler;
 import com.owner.tools.GsonUtil;
 import com.owner.tools.MyProgressDialog;
+import com.owner.tools.SpinnerDb;
 import com.owner.tools.Utils;
 
 import android.os.Bundle;
@@ -122,13 +123,17 @@ public class IncomeDetailActivity extends Activity {
 			submit=(Button) findViewById(R.id.submitButton);
 			
 			items=new ArrayList<String>();
-			items.add("月收入项目");
+			/*items.add("月收入项目");
 			items.add("+自定义+");
 			items.add("一工资");
 			items.add("二工资");
 			items.add("三工资");
 			items.add("其他");
-			items.add("总共");
+			items.add("总共");*/
+			//从数据库获取数据
+			SpinnerDb db=new SpinnerDb(context);
+			items=db.select(2);
+			db.close();
 			
 			catalogSpinner.setAdapter(new CatalogSpinnerAdapter(context,items,FLAG));			
 			catalogSpinner.setOnItemSelectedListener(itemSelected);

@@ -71,6 +71,10 @@
       <action name="AddUser" class="com.owner.service.action.UserAction" method="addUser">
          <result type="json" />
       </action>
+      
+      <action name="GetSpinner" class="com.owner.service.action.SpinnerAction" method="getSpinner">
+         <result type="json" />
+      </action>
         
    </package>
 </struts>    
