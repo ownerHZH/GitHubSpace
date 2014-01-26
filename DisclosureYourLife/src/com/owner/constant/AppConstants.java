@@ -26,7 +26,7 @@ public class AppConstants {
 	public static User USER;
 	
 	//服务器所在链接
-	public static String HttpHostAdress="http://192.168.0.102:8080/DisclosureYourLife/";
+	public static String HttpHostAdress="http://192.168.1.150:8080/DisclosureYourLife/";
 	
 	public static String TARGET_NOT_FOUND_EXCEPTION = "Target host must not be null";
 	public static String HTTPHOST_CONNECT_EXCEPTION = "HttpHostConnectException";

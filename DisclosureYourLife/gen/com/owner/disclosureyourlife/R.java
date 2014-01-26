@@ -348,7 +348,7 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #Gallery1_android_galleryItemBackground android:galleryItemBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #Gallery1_android_galleryItemBackground com.owner.disclosureyourlife:android_galleryItemBackground}</code></td><td></td></tr>
            </table>
            @see #Gallery1_android_galleryItemBackground
          */
@@ -356,9 +356,9 @@ containing a value of this type.
             0x0101004c
         };
         /**
-          <p>This symbol is the offset where the {@link android.R.attr#galleryItemBackground}
+          <p>This symbol is the offset where the {@link com.owner.disclosureyourlife.R.attr#android_galleryItemBackground}
           attribute's value can be found in the {@link #Gallery1} array.
-          @attr name android:galleryItemBackground
+          @attr name android:android_galleryItemBackground
         */
         public static final int Gallery1_android_galleryItemBackground = 0;
         /** Attributes that can be used with a LabelView.
@@ -389,7 +389,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.owner.disclosureyourlife:text
+          @attr name android:text
         */
         public static final int LabelView_text = 0;
         /**
@@ -404,7 +404,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.owner.disclosureyourlife:textColor
+          @attr name android:textColor
         */
         public static final int LabelView_textColor = 1;
         /**
@@ -420,7 +420,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.owner.disclosureyourlife:textSize
+          @attr name android:textSize
         */
         public static final int LabelView_textSize = 2;
         /** Attributes that can be used with a TogglePrefAttrs.
@@ -429,7 +429,7 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #TogglePrefAttrs_android_preferenceLayoutChild android:preferenceLayoutChild}</code></td><td></td></tr>
+           <tr><td><code>{@link #TogglePrefAttrs_android_preferenceLayoutChild com.owner.disclosureyourlife:android_preferenceLayoutChild}</code></td><td></td></tr>
            </table>
            @see #TogglePrefAttrs_android_preferenceLayoutChild
          */
@@ -437,9 +437,9 @@ containing a value of this type.
             0x01010094
         };
         /**
-          <p>This symbol is the offset where the {@link android.R.attr#preferenceLayoutChild}
+          <p>This symbol is the offset where the {@link com.owner.disclosureyourlife.R.attr#android_preferenceLayoutChild}
           attribute's value can be found in the {@link #TogglePrefAttrs} array.
-          @attr name android:preferenceLayoutChild
+          @attr name android:android_preferenceLayoutChild
         */
         public static final int TogglePrefAttrs_android_preferenceLayoutChild = 0;
     };

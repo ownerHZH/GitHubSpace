@@ -11,44 +11,71 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             CID as cid, 
 	        UID as uid,
 	        CName as name,
-	        CMoney as money
+	        CMoney as money,
+	        CDate as date
         from consume where CID = #{cid}  
-    </select>  
+    </select> 
+    
+    <select id="selectConsumeByDate" parameterType="java.lang.String"  
+        resultType="Consume">  
+        select 
+            CID as cid, 
+	        UID as uid,
+	        CName as name,
+	        CMoney as money,
+	        CDate as date
+        from consume where UID = #{uid,jdbcType=INTEGER} and CDate=#{date,jdbcType=TIMESTAMP} 
+    </select>
+     
     <select id="selectAll" resultType="Consume">  
         select
             CID as cid, 
 	        UID as uid,
 	        CName as name,
-	        CMoney as money 
+	        CMoney as money,
+	        CDate as date 
          from consume ORDER BY CID DESC
            limit #{pageno,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
     </select>  
+    
+    <select id="selectAllGroupByDate" resultType="Consume">  
+        select
+            CID as cid, 
+	        UID as uid,
+	        CName as name,
+	        CMoney as money,
+	        CDate as date 
+         from consume GROUP BY CDate
+           limit #{pageno,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+    </select> 
+    
     <select id="selectPersonsByUid" resultType="Consume" parameterType="String">  
         select 
             CID as cid, 
 	        UID as uid,
 	        CName as name,
-	        CMoney as money
+	        CMoney as money,
+	        CDate as date
         from consume where UID like #{uid}  
     </select>  
     <insert id="insertConsume" parameterType="Consume" keyProperty="CID" useGeneratedKeys="true">         
-        insert into Consume(UID,CName,CMoney)  
-        values(#{uid},#{name},#{money})
+        insert into Consume(UID,CName,CMoney,CDate)  
+        values(#{uid},#{name},#{money},#{date,jdbcType=TIMESTAMP})
         <selectKey keyProperty="CID" resultType="int" order="AFTER">
            SELECT LAST_INSERT_ID() AS cid;
         </selectKey>         
     </insert> 
     
     <insert id="insertConsumeBatch" parameterType="Consume">  
-        insert into Consume(UID,CName,CMoney)  
+        insert into Consume(UID,CName,CMoney,CDate)  
         values
           <foreach collection="consumes" item="item" index="index" separator=",">
-               (#{item.uid},#{item.name},#{item.money})
+               (#{item.uid},#{item.name},#{item.money},#{item.date,jdbcType=TIMESTAMP})
           </foreach> 
     </insert> 
     
     <update id="updateConsume" parameterType="Consume">  
-        update consume set UID=#{uid},CName=#{name},CMoney=#{noney}  
+        update consume set UID=#{uid},CName=#{name},CMoney=#{noney} ,CDate=#{date,jdbcType=TIMESTAMP} 
         where CID=#{cid}  
     </update>  
 </mapper>  

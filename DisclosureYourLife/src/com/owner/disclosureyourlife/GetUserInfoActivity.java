@@ -15,18 +15,14 @@ import com.owner.tools.GsonUtil;
 import com.owner.tools.PhoneInfo;
 import com.owner.tools.SpinnerDb;
 
-import android.R.integer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
 
 public class GetUserInfoActivity extends Activity {
 

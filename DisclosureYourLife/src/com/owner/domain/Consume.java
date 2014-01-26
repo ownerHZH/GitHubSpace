@@ -1,6 +1,7 @@
 package com.owner.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Consume implements Serializable {
 
@@ -9,6 +10,7 @@ public class Consume implements Serializable {
 	private int uid;
 	private String name;
 	private Double money;
+	private Date date;
 	
 	public int getCid() {
 		return cid;
@@ -34,11 +36,15 @@ public class Consume implements Serializable {
 	public void setMoney(Double money) {
 		this.money = money;
 	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
 	@Override
 	public String toString() {
 		return "Consume [cid=" + cid + ", uid=" + uid + ", name=" + name
-				+ ", money=" + money + "]";
+				+ ", money=" + money + ", date=" + date + "]";
 	}
-
-
 }

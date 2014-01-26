@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,6 +23,7 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.TabHost.OnTabChangeListener;
+import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends Activity {
@@ -34,6 +37,7 @@ public class MainActivity extends Activity {
 	
 	private Button consume,income,embarrass,plainLook;
 	private boolean isSet=false;
+	private long exitTime=0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -196,6 +200,26 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		//getMenuInflater().inflate(R.menu.main, menu);
 		return false;
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK
+				&& event.getAction() == KeyEvent.ACTION_DOWN) {
+
+			if ((System.currentTimeMillis() - exitTime) > 2000) // System.currentTimeMillis()无论何时调用，肯定大于2000
+			{
+				Toast.makeText(context, "再按一次退出程序",
+						Toast.LENGTH_SHORT).show();
+				exitTime = System.currentTimeMillis();
+			} else {
+				finish();
+				System.exit(0);
+			}
+
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 }

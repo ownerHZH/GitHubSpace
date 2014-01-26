@@ -13,6 +13,7 @@ import com.owner.httpgson.HttpPreExecuteHandler;
 import com.owner.httpgson.HttpResponseHandler;
 import com.owner.pull.list.XListView;
 import com.owner.pull.list.XListView.IXListViewListener;
+import com.owner.tools.ConsumeIncomeDb;
 import com.owner.tools.DialogUtil;
 import com.owner.tools.GsonUtil;
 import com.owner.tools.MyProgressDialog;
@@ -36,13 +37,15 @@ public class ConsumeListActivity extends Activity implements IXListViewListener 
 	private ConsumeAndIncomeAdapter adapter;
 	private Context context;
 	private XListView consumeListView;
-	private List<Consume> datalist=new ArrayList<Consume>();
+	private List<Consume> datalist=new ArrayList<Consume>();	
+	private List<Consume> datalist_r=new ArrayList<Consume>();
 	private Handler mHandler;
 	private MyProgressDialog pdialog;
 	
 	private int pageno=0;
-	private int pagesize=10;
+	private int pagesize=50;
 	private int pageindex=0;
+	ConsumeIncomeDb db;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,8 +57,8 @@ public class ConsumeListActivity extends Activity implements IXListViewListener 
 		consumeListView.setOnItemClickListener(listener);
 		consumeListView.setXListViewListener(this);
 		mHandler = new Handler();
-		
-		adapter=new ConsumeAndIncomeAdapter(context, datalist);
+		db=new ConsumeIncomeDb(context);
+		adapter=new ConsumeAndIncomeAdapter(context, datalist_r);
 		consumeListView.setAdapter(adapter);
 		//获取网络数据并显示在ListView上
 		getData(0,pagesize,true);//获取网络数据
@@ -88,7 +91,9 @@ public class ConsumeListActivity extends Activity implements IXListViewListener 
 								if(first)
 								{
 									pageindex=0;
-									datalist.clear();									
+									datalist.clear();
+									datalist_r.clear();
+									db.clearDb(1);
 								}	
 								copyToList(tempList);//把tempList的数据保存到datalist当中
 								adapter.notifyDataSetChanged();
@@ -123,7 +128,7 @@ public class ConsumeListActivity extends Activity implements IXListViewListener 
 		    }  
 		    int realPosition=(int)id;
 			Intent intent=new Intent(context,ConsumeDetailActivity.class);
-			intent.putExtra("data", datalist.get(realPosition));
+			intent.putExtra("data", datalist_r.get(realPosition));
 			startActivity(intent);
 		}
 	};
@@ -167,6 +172,13 @@ public class ConsumeListActivity extends Activity implements IXListViewListener 
 		{
 			datalist.add(tempList.get(i));
 		}
+		db.insert(1, datalist);
+		
+		List<Consume> tt=(List<Consume>) db.select(1);
+		for(int j=0;j<tt.size();j++)
+		{
+			datalist_r.add(tt.get(j));
+		}
 	}
 
 	@Override
@@ -176,6 +188,9 @@ public class ConsumeListActivity extends Activity implements IXListViewListener 
 		return false;
 	}
 
-	
-
+	@Override
+	protected void onDestroy() {
+		db.close();
+		super.onDestroy();
+	}
 }

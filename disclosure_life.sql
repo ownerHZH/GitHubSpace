@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50527
 File Encoding         : 65001
 
-Date: 2014-01-25 21:20:32
+Date: 2014-01-26 17:33:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,6 +24,7 @@ CREATE TABLE `consume` (
   `UID` int(11) DEFAULT NULL,
   `CName` varchar(20) NOT NULL,
   `CMoney` decimal(10,0) NOT NULL,
+  `CDate` datetime DEFAULT NULL,
   PRIMARY KEY (`CID`),
   KEY `FK_user_consume` (`UID`),
   CONSTRAINT `FK_user_consume` FOREIGN KEY (`UID`) REFERENCES `user` (`UID`)
@@ -32,67 +33,67 @@ CREATE TABLE `consume` (
 -- ----------------------------
 -- Records of consume
 -- ----------------------------
-INSERT INTO `consume` VALUES ('1', '1', '买衣服', '200');
-INSERT INTO `consume` VALUES ('2', '1', '买手机', '1500');
-INSERT INTO `consume` VALUES ('3', '1', '车费', '80');
-INSERT INTO `consume` VALUES ('4', '1', '月生活费', '1200');
-INSERT INTO `consume` VALUES ('5', '1', '水电费', '120');
-INSERT INTO `consume` VALUES ('7', '1', '买杂货', '50');
-INSERT INTO `consume` VALUES ('8', '1', '买杂货', '50');
-INSERT INTO `consume` VALUES ('9', '1', '买杂货', '50');
-INSERT INTO `consume` VALUES ('10', '1', '买杂货', '50');
-INSERT INTO `consume` VALUES ('11', '1', '买杂货', '50');
-INSERT INTO `consume` VALUES ('12', '1', '买杂货', '50');
-INSERT INTO `consume` VALUES ('13', '1', '买杂货', '50');
-INSERT INTO `consume` VALUES ('14', '1', '买杂货', '50');
-INSERT INTO `consume` VALUES ('16', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('17', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('18', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('19', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('20', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('21', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('22', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('23', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('24', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('25', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('26', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('27', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('28', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('29', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('30', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('31', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('32', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('33', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('34', '1', '买房子', '2000');
-INSERT INTO `consume` VALUES ('35', '1', '买房子1', '2001');
-INSERT INTO `consume` VALUES ('36', '1', '买房子2', '2020');
-INSERT INTO `consume` VALUES ('37', '1', '买房子3', '2030');
-INSERT INTO `consume` VALUES ('38', '1', '买房子4', '2040');
-INSERT INTO `consume` VALUES ('39', '1', '买房子5', '2050');
-INSERT INTO `consume` VALUES ('40', '1', '买房子1', '2001');
-INSERT INTO `consume` VALUES ('41', '1', '买房子2', '2020');
-INSERT INTO `consume` VALUES ('42', '1', '买房子3', '2030');
-INSERT INTO `consume` VALUES ('43', '1', '买房子4', '2040');
-INSERT INTO `consume` VALUES ('44', '1', '买房子5', '2050');
-INSERT INTO `consume` VALUES ('45', '1', '买房子1', '2001');
-INSERT INTO `consume` VALUES ('46', '1', '买房子2', '2020');
-INSERT INTO `consume` VALUES ('47', '1', '买房子3', '2030');
-INSERT INTO `consume` VALUES ('48', '1', '买房子4', '2040');
-INSERT INTO `consume` VALUES ('49', '1', '买房子5', '2050');
-INSERT INTO `consume` VALUES ('50', '1', '买房子1', '2001');
-INSERT INTO `consume` VALUES ('51', '1', '买房子2', '2020');
-INSERT INTO `consume` VALUES ('52', '1', '买房子3', '2030');
-INSERT INTO `consume` VALUES ('53', '1', '买房子4', '2040');
-INSERT INTO `consume` VALUES ('54', '1', '买房子5', '2050');
-INSERT INTO `consume` VALUES ('55', '1', '买房子1', '2001');
-INSERT INTO `consume` VALUES ('56', '1', '买房子2', '2020');
-INSERT INTO `consume` VALUES ('57', '1', '买房子3', '2030');
-INSERT INTO `consume` VALUES ('58', '1', '买房子4', '2040');
-INSERT INTO `consume` VALUES ('59', '1', '买房子5', '2050');
-INSERT INTO `consume` VALUES ('60', '1', '送礼物', '67');
-INSERT INTO `consume` VALUES ('61', '1', '送礼物', '87');
-INSERT INTO `consume` VALUES ('62', '1', '送礼物', '6');
-INSERT INTO `consume` VALUES ('63', '1', '买食物', '8');
+INSERT INTO `consume` VALUES ('1', '1', '买衣服', '200', '2014-01-26 14:04:32');
+INSERT INTO `consume` VALUES ('2', '1', '买手机', '1500', '2014-01-26 14:04:32');
+INSERT INTO `consume` VALUES ('3', '1', '车费', '80', '2014-01-26 14:04:32');
+INSERT INTO `consume` VALUES ('4', '1', '月生活费', '1200', '2014-01-26 14:04:32');
+INSERT INTO `consume` VALUES ('5', '1', '水电费', '120', '2014-01-26 14:04:32');
+INSERT INTO `consume` VALUES ('7', '1', '买杂货', '50', '2014-01-26 14:04:32');
+INSERT INTO `consume` VALUES ('8', '1', '买杂货', '50', '2014-01-25 14:05:15');
+INSERT INTO `consume` VALUES ('9', '1', '买杂货', '50', '2014-01-25 14:05:15');
+INSERT INTO `consume` VALUES ('10', '1', '买杂货', '50', '2014-01-25 14:05:15');
+INSERT INTO `consume` VALUES ('11', '1', '买杂货', '50', '2014-01-25 14:05:15');
+INSERT INTO `consume` VALUES ('12', '1', '买杂货', '50', '2014-01-25 14:05:15');
+INSERT INTO `consume` VALUES ('13', '1', '买杂货', '50', '2014-01-25 14:05:15');
+INSERT INTO `consume` VALUES ('14', '1', '买杂货', '50', '2014-01-25 14:05:15');
+INSERT INTO `consume` VALUES ('16', '1', '买房子', '2000', '2014-01-25 14:05:15');
+INSERT INTO `consume` VALUES ('17', '1', '买房子', '2000', '2014-01-24 14:05:29');
+INSERT INTO `consume` VALUES ('18', '1', '买房子', '2000', '2014-01-24 14:05:29');
+INSERT INTO `consume` VALUES ('19', '1', '买房子', '2000', '2014-01-24 14:05:29');
+INSERT INTO `consume` VALUES ('20', '1', '买房子', '2000', '2014-01-24 14:05:29');
+INSERT INTO `consume` VALUES ('21', '1', '买房子', '2000', '2014-01-24 14:05:29');
+INSERT INTO `consume` VALUES ('22', '1', '买房子', '2000', '2014-01-24 14:05:29');
+INSERT INTO `consume` VALUES ('23', '1', '买房子', '2000', '2014-01-24 14:05:29');
+INSERT INTO `consume` VALUES ('24', '1', '买房子', '2000', '2014-01-24 14:05:29');
+INSERT INTO `consume` VALUES ('25', '1', '买房子', '2000', '2014-01-23 14:05:44');
+INSERT INTO `consume` VALUES ('26', '1', '买房子', '2000', '2014-01-23 14:05:44');
+INSERT INTO `consume` VALUES ('27', '1', '买房子', '2000', '2014-01-23 14:05:44');
+INSERT INTO `consume` VALUES ('28', '1', '买房子', '2000', '2014-01-23 14:05:44');
+INSERT INTO `consume` VALUES ('29', '1', '买房子', '2000', '2014-01-23 14:05:44');
+INSERT INTO `consume` VALUES ('30', '1', '买房子', '2000', '2014-01-23 14:05:44');
+INSERT INTO `consume` VALUES ('31', '1', '买房子', '2000', '2014-01-23 14:05:44');
+INSERT INTO `consume` VALUES ('32', '1', '买房子', '2000', '2014-01-23 14:05:44');
+INSERT INTO `consume` VALUES ('33', '1', '买房子', '2000', '2014-01-22 14:06:04');
+INSERT INTO `consume` VALUES ('34', '1', '买房子', '2000', '2014-01-22 14:06:04');
+INSERT INTO `consume` VALUES ('35', '1', '买房子1', '2001', '2014-01-22 14:06:04');
+INSERT INTO `consume` VALUES ('36', '1', '买房子2', '2020', '2014-01-22 14:06:04');
+INSERT INTO `consume` VALUES ('37', '1', '买房子3', '2030', '2014-01-22 14:06:04');
+INSERT INTO `consume` VALUES ('38', '1', '买房子4', '2040', '2014-01-22 14:06:04');
+INSERT INTO `consume` VALUES ('39', '1', '买房子5', '2050', '2014-01-22 14:06:04');
+INSERT INTO `consume` VALUES ('40', '1', '买房子1', '2001', '2014-01-22 14:06:04');
+INSERT INTO `consume` VALUES ('41', '1', '买房子2', '2020', '2014-01-21 14:06:18');
+INSERT INTO `consume` VALUES ('42', '1', '买房子3', '2030', '2014-01-21 14:06:18');
+INSERT INTO `consume` VALUES ('43', '1', '买房子4', '2040', '2014-01-21 14:06:18');
+INSERT INTO `consume` VALUES ('44', '1', '买房子5', '2050', '2014-01-21 14:06:18');
+INSERT INTO `consume` VALUES ('45', '1', '买房子1', '2001', '2014-01-21 14:06:18');
+INSERT INTO `consume` VALUES ('46', '1', '买房子2', '2020', '2014-01-21 14:06:18');
+INSERT INTO `consume` VALUES ('47', '1', '买房子3', '2030', '2014-01-21 14:06:18');
+INSERT INTO `consume` VALUES ('48', '1', '买房子4', '2040', '2014-01-21 14:06:18');
+INSERT INTO `consume` VALUES ('49', '1', '买房子5', '2050', '2014-01-20 14:06:34');
+INSERT INTO `consume` VALUES ('50', '1', '买房子1', '2001', '2014-01-20 14:06:34');
+INSERT INTO `consume` VALUES ('51', '1', '买房子2', '2020', '2014-01-20 14:06:34');
+INSERT INTO `consume` VALUES ('52', '1', '买房子3', '2030', '2014-01-20 14:06:34');
+INSERT INTO `consume` VALUES ('53', '1', '买房子4', '2040', '2014-01-20 14:06:34');
+INSERT INTO `consume` VALUES ('54', '1', '买房子5', '2050', '2014-01-20 14:06:34');
+INSERT INTO `consume` VALUES ('55', '1', '买房子1', '2001', '2014-01-20 14:06:34');
+INSERT INTO `consume` VALUES ('56', '1', '买房子2', '2020', '2014-01-20 14:06:34');
+INSERT INTO `consume` VALUES ('57', '1', '买房子3', '2030', '2014-01-20 14:06:34');
+INSERT INTO `consume` VALUES ('58', '1', '买房子4', '2040', '2014-01-19 14:06:52');
+INSERT INTO `consume` VALUES ('59', '1', '买房子5', '2050', '2014-01-19 14:06:52');
+INSERT INTO `consume` VALUES ('60', '1', '送礼物', '67', '2014-01-19 14:06:52');
+INSERT INTO `consume` VALUES ('61', '1', '送礼物', '87', '2014-01-19 14:06:52');
+INSERT INTO `consume` VALUES ('62', '1', '送礼物', '6', '2014-01-19 14:06:52');
+INSERT INTO `consume` VALUES ('63', '1', '买食物', '8', '2014-01-19 14:06:52');
 
 -- ----------------------------
 -- Table structure for `consume_comment`
@@ -210,6 +211,7 @@ CREATE TABLE `income` (
   `UID` int(11) DEFAULT NULL,
   `IName` varchar(20) NOT NULL,
   `IMoney` decimal(10,0) NOT NULL,
+  `IDate` datetime DEFAULT NULL,
   PRIMARY KEY (`IID`),
   KEY `FK_user_income` (`UID`),
   CONSTRAINT `FK_user_income` FOREIGN KEY (`UID`) REFERENCES `user` (`UID`)
@@ -218,16 +220,16 @@ CREATE TABLE `income` (
 -- ----------------------------
 -- Records of income
 -- ----------------------------
-INSERT INTO `income` VALUES ('1', '1', '实习工资', '1500');
-INSERT INTO `income` VALUES ('2', '1', '爸妈补给', '1100');
-INSERT INTO `income` VALUES ('3', '1', '买房子1', '2001');
-INSERT INTO `income` VALUES ('4', '1', '买房子2', '2020');
-INSERT INTO `income` VALUES ('5', '1', '买房子3', '2030');
-INSERT INTO `income` VALUES ('6', '1', '买房子4', '2040');
-INSERT INTO `income` VALUES ('7', '1', '买房子5', '2050');
-INSERT INTO `income` VALUES ('8', '1', '买房子1', '2001');
-INSERT INTO `income` VALUES ('9', '1', '总共', '7');
-INSERT INTO `income` VALUES ('10', '2', 'tg', '56');
+INSERT INTO `income` VALUES ('1', '1', '实习工资', '1500', '2014-01-26 14:04:32');
+INSERT INTO `income` VALUES ('2', '1', '爸妈补给', '1100', '2014-01-26 14:04:32');
+INSERT INTO `income` VALUES ('3', '1', '买房子1', '2001', '2014-01-26 14:04:32');
+INSERT INTO `income` VALUES ('4', '1', '买房子2', '2020', '2014-01-26 14:04:32');
+INSERT INTO `income` VALUES ('5', '1', '买房子3', '2030', '2014-01-26 14:04:32');
+INSERT INTO `income` VALUES ('6', '1', '买房子4', '2040', '2014-01-26 14:04:32');
+INSERT INTO `income` VALUES ('7', '1', '买房子5', '2050', '2014-01-25 14:05:15');
+INSERT INTO `income` VALUES ('8', '1', '买房子1', '2001', '2014-01-25 14:05:15');
+INSERT INTO `income` VALUES ('9', '1', '总共', '7', '2014-01-25 14:05:15');
+INSERT INTO `income` VALUES ('10', '2', 'tg', '56', '2014-01-25 14:05:15');
 
 -- ----------------------------
 -- Table structure for `income_comment`
@@ -340,7 +342,7 @@ INSERT INTO `plain_look` VALUES ('13', '1', 'http://192.168.1.150:8080/Disclosur
 INSERT INTO `plain_look` VALUES ('14', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381743819_2F201310141743475.jpg', '韩国回家', '4', '3');
 INSERT INTO `plain_look` VALUES ('15', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381743819_2F201310141743511.jpg', '韩国回家', '3', '1');
 INSERT INTO `plain_look` VALUES ('16', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/cache_http_3A_2F_2Fyl.cms.palmtrends.com_2Fupload_2F1381743819_2F201310141743494.jpg', '韩国回家', '3', '1');
-INSERT INTO `plain_look` VALUES ('17', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/201310161105160_cross_iphone4.jpg', '恢复回家', '11', '6');
+INSERT INTO `plain_look` VALUES ('17', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/201310161105160_cross_iphone4.jpg', '恢复回家', '11', '7');
 INSERT INTO `plain_look` VALUES ('18', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/201310161113219_cross_iphone4.jpg', '恢复回家', '3', '1');
 INSERT INTO `plain_look` VALUES ('19', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/1373877356.png', 'jvhj', '3', '3');
 INSERT INTO `plain_look` VALUES ('20', '1', 'http://192.168.1.150:8080/DisclosureYourLife/plainLookPictures/201310211426338_cross_iphone4.jpg', 'jvhj', '3', '3');

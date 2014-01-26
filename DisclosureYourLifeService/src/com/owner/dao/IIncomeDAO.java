@@ -1,5 +1,6 @@
 package com.owner.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.owner.domain.Consume;
@@ -38,4 +39,11 @@ public interface IIncomeDAO {
 	 * @return 1  成功 0 失败
 	 */
 	public void insertIncome(List<Income> incomes);
+	
+	/**
+	 * 根据id查询所在的信息 这个id是第多少的意思
+	 * @param id
+	 * @return 返回收入实体
+	 */
+	public List<Income> queryIncomeByDate(int uid,Date date);
 }

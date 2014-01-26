@@ -1,6 +1,8 @@
 package com.owner.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +91,23 @@ public class IConsumeDAOImpl implements IConsumeDAO {
 		try {
 			session = sessionFactory.openSession(); 
 			consumeList=session.selectList("com.owner.domain.ConsumeMapper.selectPersonsByUid",uid);
+		} finally
+		{
+			session.close();
+		}
+		return consumeList;
+	}
+
+	@Override
+	public List<Consume> queryConsumeByDate(int uid, Date date) {
+		List<Consume> consumeList=new ArrayList<Consume>();
+		SqlSession session = null;
+		try {
+			session = sessionFactory.openSession(); 
+			HashMap<String,String> hashMap=new HashMap<String, String>();
+			hashMap.put("uid", uid+"");
+			hashMap.put("date", new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date));
+			consumeList=session.selectList("com.owner.domain.ConsumeMapper.selectPersonsByDate",hashMap);
 		} finally
 		{
 			session.close();

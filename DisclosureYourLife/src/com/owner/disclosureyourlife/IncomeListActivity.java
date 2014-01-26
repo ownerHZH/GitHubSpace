@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.owner.constant.AppConstants;
 import com.owner.disclosureyourlife.EmbarrassListActivity.EmbarrassAdapter;
+import com.owner.domain.Consume;
 import com.owner.domain.Embarrass;
 import com.owner.domain.Income;
 import com.owner.domain.JsonEntity;
@@ -14,15 +15,18 @@ import com.owner.httpgson.HttpPreExecuteHandler;
 import com.owner.httpgson.HttpResponseHandler;
 import com.owner.pull.list.XListView;
 import com.owner.pull.list.XListView.IXListViewListener;
+import com.owner.tools.ConsumeIncomeDb;
 import com.owner.tools.DialogUtil;
 import com.owner.tools.GsonUtil;
 import com.owner.tools.MyProgressDialog;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -40,12 +44,14 @@ public class IncomeListActivity extends Activity implements IXListViewListener {
 	private Context context;
 	private IncomeAdapter adapter;
 	private List<Income> datalist=new ArrayList<Income>();
+	private List<Income> datalist_r=new ArrayList<Income>();
 	private MyProgressDialog pdialog;
 	private Handler mHandler;
 	
 	private int pageno=0;
-	private int pagesize=10;
+	private int pagesize=50;
 	private int pageindex=0;
+	ConsumeIncomeDb db;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,8 +63,8 @@ public class IncomeListActivity extends Activity implements IXListViewListener {
 		incomeListView.setOnItemClickListener(listener);
 		incomeListView.setXListViewListener(this);
 		mHandler = new Handler();
-		
-		adapter=new IncomeAdapter(context, datalist);
+		db=new ConsumeIncomeDb(context);
+		adapter=new IncomeAdapter(context, datalist_r);
 		incomeListView.setAdapter(adapter);
 		//获取网络数据显示在列表上
 		getData(0,pagesize,true);
@@ -96,7 +102,9 @@ public class IncomeListActivity extends Activity implements IXListViewListener {
 								if(first)
 								{
 									pageindex=0;
-									datalist.clear();									
+									datalist.clear();
+									datalist_r.clear();
+									db.clearDb(2);
 								}
 								copyToList(tempList);//把tempList的数据保存到datalist当中
 								adapter.notifyDataSetChanged();
@@ -129,7 +137,7 @@ public class IncomeListActivity extends Activity implements IXListViewListener {
 		    }  
 		    int realPosition=(int)id;
 			Intent intent=new Intent(context,IncomeDetailActivity.class);
-			intent.putExtra("data", datalist.get(realPosition));
+			intent.putExtra("data", datalist_r.get(realPosition));
 			startActivity(intent);
 		}
 	};
@@ -171,6 +179,14 @@ public class IncomeListActivity extends Activity implements IXListViewListener {
 		for(int i=0;i<tempList.size();i++)
 		{
 			datalist.add(tempList.get(i));
+		}
+		
+        db.insert(2, datalist);
+		
+		List<Income> tt=(List<Income>) db.select(2);
+		for(int j=0;j<tt.size();j++)
+		{
+			datalist_r.add(tt.get(j));
 		}
 	}
 
@@ -267,6 +283,9 @@ public class IncomeListActivity extends Activity implements IXListViewListener {
 		}
 	}
 
-	
-
+	@Override
+	protected void onDestroy() {
+		db.close();
+		super.onDestroy();
+	}
 }

@@ -1,6 +1,8 @@
 package com.owner.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,6 +97,23 @@ public class IIncomeDAOImpl implements IIncomeDAO {
 		{
 			sqlSession.close();
 		}
+	}
+
+	@Override
+	public List<Income> queryIncomeByDate(int uid, Date date) {
+		List<Income> IncomeList=new ArrayList<Income>();
+		SqlSession session = null;
+		try {
+			session = sessionFactory.openSession(); 
+			HashMap<String,String> hashMap=new HashMap<String, String>();
+			hashMap.put("uid", uid+"");
+			hashMap.put("date", new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date));
+			IncomeList=session.selectList("com.owner.domain.IncomeMapper.selectIncomeByUid",hashMap);
+		} finally
+		{
+			session.close();
+		}
+		return IncomeList;
 	}
 
 }

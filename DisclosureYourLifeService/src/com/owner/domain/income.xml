@@ -11,46 +11,73 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             IID as iid, 
 	        UID as uid,
 	        IName as name,
-	        IMoney as money
+	        IMoney as money,
+	        IDate as date
         from Income where IID = #{iid}  
-    </select>  
+    </select> 
+    
+    <select id="selectIncomeByDate" parameterType="java.lang.String"  
+        resultType="Income">  
+        select 
+            IID as iid, 
+	        UID as uid,
+	        IName as name,
+	        IMoney as money,
+	        IDate as date
+        from Income where UID = #{uid,jdbcType=INTEGER}  and IDate=#{date,jdbcType=TIMESTAMP} 
+    </select>
+     
     <select id="selectAll" resultType="Income">  
         select
             IID as iid, 
 	        UID as uid,
 	        IName as name,
-	        IMoney as money
+	        IMoney as money,
+	        IDate as date
          from income ORDER BY IID desc 
            limit #{pageno,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
-    </select>  
+    </select>
+    
+     <select id="selectAllGroupByDate" resultType="Income">  
+        select
+            IID as iid, 
+	        UID as uid,
+	        IName as name,
+	        IMoney as money,
+	        IDate as date
+         from income ORDER BY IID DESC 
+           limit #{pageno,jdbcType=INTEGER},#{pagesize,jdbcType=INTEGER}
+    </select>
+      
     <select id="selectIncomeByUid" resultType="Income" parameterType="String">  
         select 
             IID as iid, 
 	        UID as uid,
 	        IName as name,
-	        IMoney as money
+	        IMoney as money,
+	        IDate as date
         from income where UID like #{uid}  
     </select>  
     
     <insert id="insertIncome" parameterType="Income">  
-        insert into Income(UID,IName,IMoney)  
-        values(#{uid},#{name},#{money})
+        insert into Income(UID,IName,IMoney,IDate)  
+        values(#{uid},#{name},#{money},#{date,jdbcType=TIMESTAMP})
         <selectKey keyProperty="IID" resultType="int" order="AFTER">
            SELECT LAST_INSERT_ID() AS iid;
         </selectKey>         
     </insert> 
     
     <insert id="insertIncomeBatch" parameterType="Income">  
-        insert into income(UID,IName,IMoney)  
+        insert into income(UID,IName,IMoney,IDate)  
         values
           <foreach collection="incomes" item="item" index="index" separator=",">
-               (#{item.uid},#{item.name},#{item.money})
+               (#{item.uid},#{item.name},#{item.money},#{item.date,jdbcType=TIMESTAMP})
           </foreach> 
     </insert>
     
     <update id="updateIncome" parameterType="Income">  
-        update income set uid=#{uid},name=#{name},money=#{noney}  
-        where iid=#{iid}  
+        update income set UID=#{uid},IName=#{name},IMoney=#{noney} ,IDate={#date,jdbcType=TIMESTAMP} 
+        where IID=#{iid}  
     </update>  
 </mapper>  
 
