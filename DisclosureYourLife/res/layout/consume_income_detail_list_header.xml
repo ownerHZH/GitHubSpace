@@ -5,42 +5,14 @@
     android:gravity="top|center"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/clauses"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-<LinearLayout
+    <ListView
+        android:id="@+id/listView1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center" >
+        android:layout_height="190dp" >
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/consume_detail_unit_char"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/money"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="text"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#FF0000"
-            android:textSize="50sp" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/consume_detail_unit"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    </LinearLayout>
-<EditText
+    </ListView>
+    
+    <EditText
         android:id="@+id/noteEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

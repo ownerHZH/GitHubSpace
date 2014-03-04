@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,6 +14,7 @@ import com.owner.db.MyDatabaseHelper;
 import com.owner.domain.Consume;
 import com.owner.domain.Income;
 
+@SuppressLint("SimpleDateFormat")
 public class ConsumeIncomeDb {
 	private MyDatabaseHelper dbHelper=null;
 	private Context context;
@@ -34,6 +36,7 @@ public class ConsumeIncomeDb {
 		SQLiteDatabase db=dbHelper.getReadableDatabase();
 		if(flag==1)
 		{
+			@SuppressWarnings("unchecked")
 			List<Consume> consumes=(List<Consume>) list;
 			Consume consume=null;
 			db.beginTransaction();
@@ -54,6 +57,7 @@ public class ConsumeIncomeDb {
 		    }
 		}else if(flag==2)
 		{
+			@SuppressWarnings("unchecked")
 			List<Income> incomes=(List<Income>) list;
 			Income income=null;
 			db.beginTransaction();
@@ -76,6 +80,13 @@ public class ConsumeIncomeDb {
 				
 	}
 	
+	/**
+	 * 查找本地数据库的数据
+	 * @param flag  1为消费列表  2为收入列表
+	 * @param uid   用户ID
+	 * @param date  日期
+	 * @return  返回相应的数据List
+	 */
 	public List<?> select(int flag,int uid,Date date)
 	{
 		// 执行查询

@@ -14,6 +14,7 @@ import com.owner.httpgson.HttpAndroidTask;
 import com.owner.httpgson.HttpClientService;
 import com.owner.httpgson.HttpPreExecuteHandler;
 import com.owner.httpgson.HttpResponseHandler;
+import com.owner.tools.ConsumeIncomeDb;
 import com.owner.tools.GsonUtil;
 import com.owner.tools.MyProgressDialog;
 import com.owner.tools.SpinnerDb;
@@ -21,25 +22,22 @@ import com.owner.tools.Utils;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.text.Html;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.Window;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.BaseAdapter;
@@ -63,9 +61,11 @@ public class ConsumeDetailActivity extends Activity {
 	private List<String> items;//选择项的内容
 	private Button submit;//提交按钮
     private ViewStub viewStub;
-    private TextView clauses;
-    private TextView money;
     private MyProgressDialog pdialog;
+    
+    private ListView listView;//显示某人上传的同一系列信息列表
+	ConsumeIncomeDb consumeIncomeDb;
+	ConsumeAdapter dAdapter;//显示同一系列的adapter
     
     private Button leaveANoteButton;    //评论按钮
     private ListView leaveANoteListView;//评论显示列表
@@ -96,6 +96,7 @@ public class ConsumeDetailActivity extends Activity {
 		Intent intent=getIntent();
 		if(intent.hasExtra("data"))//显示详细的页面
 		{
+			consumeIncomeDb=new ConsumeIncomeDb(context);
 			Consume data=(Consume) intent.getSerializableExtra("data");
 			handler=new Handler();
 			//detail.setText(data);
@@ -103,13 +104,20 @@ public class ConsumeDetailActivity extends Activity {
 			viewStub=(ViewStub) findViewById(R.id.consumeDetailLayout);
 			viewStub.inflate();
 			leaveANoteListView=(ListView) findViewById(R.id.leave_a_note_listView);
-			leaveANoteListViewHeader=LayoutInflater.from(this).inflate(R.layout.consume_income_detail_list_header, null);
+			leaveANoteListViewHeader=LayoutInflater.from(this)
+					.inflate(R.layout.consume_income_detail_list_header, null);
 			cid=data.getCid();//这个详细页面所显示的数据id号
-			clauses=(TextView) leaveANoteListViewHeader.findViewById(R.id.clauses);
-			money=(TextView) leaveANoteListViewHeader.findViewById(R.id.money);
 			
-			clauses.setText(data.getName());
-			money.setText("  "+data.getMoney()+"  ");
+			listView=(ListView) leaveANoteListViewHeader.findViewById(R.id.listView1);
+			@SuppressWarnings("unchecked")
+			List<Consume> dData=(List<Consume>) consumeIncomeDb.select(1, data.getUid(), data.getDate()); 	
+			if(dData!=null&&dData.size()>0)
+			{
+				dAdapter=new ConsumeAdapter(context, dData);
+				listView.setAdapter(dAdapter);
+				consumeIncomeDb.close();
+			}
+			
 			leaveANoteButton=(Button) leaveANoteListViewHeader.findViewById(R.id.leave_a_note);
 			leaveANoteButton.setOnClickListener(l);
 			
@@ -122,7 +130,33 @@ public class ConsumeDetailActivity extends Activity {
 			consumeCommentAdapter=new ConsumeCommentAdapter(consumeCommentList);
 			leaveANoteListView.setAdapter(consumeCommentAdapter);
 			//获取网络评论信息
-			handler.postDelayed(receiveCommentRunnable, 100);			
+			handler.postDelayed(receiveCommentRunnable, 100);	
+			
+			listView.setOnTouchListener(new OnTouchListener(){
+
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					int eventaction = event.getActionMasked();
+					int mPosX = 0,mPosY = 0;
+				    switch (eventaction ) {
+				          case MotionEvent.ACTION_DOWN: // touch down so check if the finger is on a ball
+				          mPosX = listView.getScrollX();
+				          mPosY = listView.getScrollY();
+				              break;
+				          case MotionEvent.ACTION_MOVE:   // touch drag with the ball
+				                 float ty1 = event.getY(0);
+				                 float ty2 = event.getY(1);
+				                 if (((ty2 - ty1) < 0) && (mPosY < listView.getCount())) {
+				                	 listView.scrollTo(mPosX, mPosY + 1);
+				                 }
+				                 else if (((ty2 - ty1) > 0)){
+				                	 listView.scrollTo(mPosX, mPosY -1);
+				                 }
+				           break;
+				          }
+				    return false;
+				}
+				});
 			
 		}else {//上传自己的页面显示
 			viewStub=(ViewStub) findViewById(R.id.uploadLayout);
@@ -569,6 +603,91 @@ public class ConsumeDetailActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.consume_detail, menu);
 		return false;
+	}
+	
+	public class ConsumeAdapter extends BaseAdapter {
+
+		private LayoutInflater inflater;
+		private List<Consume> list;
+		
+		/**
+		 * 构造函数
+		 * @param context
+		 */
+		public ConsumeAdapter(Context context,List<Consume> datalist)
+		{
+			inflater=LayoutInflater.from(context);
+			this.list=datalist;
+		}
+		
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return list.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			// TODO Auto-generated method stub
+			return list.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			// TODO Auto-generated method stub
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			 ViewHolder holder;        
+	         if (convertView == null) {
+	        	 
+		          convertView = inflater.inflate(R.layout.simple_list_item,null);	
+		          holder = new ViewHolder();
+		          
+		         /*获取Item组件*/                    
+		         holder.title = (TextView) convertView.findViewById(R.id.itemTitle);
+		         
+		         convertView.setTag(holder);//给holder设置tag                   
+	         }
+	         else
+	         {
+	             holder = (ViewHolder)convertView.getTag();//获取holder                
+	         }
+
+	         /*Item组件赋值
+	          * 显示的格式为： { xxx:  ￥xxx元 }
+	          * */            
+	         holder.title.setText(list.get(position).getName()+"   "+
+	                 getString(R.string.upload_consume_income_unit_char)+
+	                 list.get(position).getMoney()+
+	                 getString(R.string.upload_consume_income_unit));
+	         
+	         /**
+	          * 给Item附上样式
+	          */
+	         if (list.size() == 1) {
+	             convertView.setBackgroundResource(R.drawable.circle_list_single);
+	         } else if (list.size() > 1) {
+	             if (position == 0) {
+	                 convertView.setBackgroundResource(R.drawable.circle_list_top);
+	             } else if (position == (list.size() - 1)) {
+	                 convertView.setBackgroundResource(R.drawable.circle_list_bottom);
+	             } else {
+	                 convertView.setBackgroundResource(R.drawable.circle_list_middle);
+	             }
+	         }
+	           
+	         return convertView;
+	       }
+		
+		/**
+		 * 组件内部类
+		 * */
+		public final class ViewHolder{
+			public TextView title;   //列表显示的单项
+		}
 	}
 
 }

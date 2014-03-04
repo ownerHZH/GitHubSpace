@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.owner.adapter.CatalogSpinnerAdapter;
 import com.owner.constant.AppConstants;
+import com.owner.disclosureyourlife.IncomeListActivity.IncomeAdapter.ViewHolder;
 import com.owner.domain.Income;
 import com.owner.domain.IncomeComment;
 import com.owner.domain.JsonEntity;
@@ -15,6 +16,7 @@ import com.owner.httpgson.HttpAndroidTask;
 import com.owner.httpgson.HttpClientService;
 import com.owner.httpgson.HttpPreExecuteHandler;
 import com.owner.httpgson.HttpResponseHandler;
+import com.owner.tools.ConsumeIncomeDb;
 import com.owner.tools.GsonUtil;
 import com.owner.tools.MyProgressDialog;
 import com.owner.tools.SpinnerDb;
@@ -30,11 +32,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -59,8 +63,9 @@ public class IncomeDetailActivity extends Activity {
 	private List<String> items;//选择项的内容
 	private Button submit;//提交按钮
 	
-	private TextView clauses;
-	private TextView money;
+	private ListView listView;//显示某人上传的同一系列信息列表
+	ConsumeIncomeDb consumeIncomeDb;
+	IncomeAdapter dAdapter;//显示同一系列的adapter
 	private MyProgressDialog pdialog;
 	
 	private Button leaveANoteButton;    //评论按钮
@@ -87,6 +92,8 @@ public class IncomeDetailActivity extends Activity {
 		Intent intent=getIntent();	
 		if(intent.hasExtra("data"))
 		{
+			consumeIncomeDb=new ConsumeIncomeDb(context);
+			
 			Income data=(Income) intent.getSerializableExtra("data");
 			title.setText("收入详细");
 			viewStub=(ViewStub) findViewById(R.id.incomeDetailLayout);
@@ -95,11 +102,16 @@ public class IncomeDetailActivity extends Activity {
 			leaveANoteListViewHeader=LayoutInflater.from(this).inflate(R.layout.consume_income_detail_list_header, null);
 			handler=new Handler();
 			iid=data.getIid();//这个详细页面所显示的数据id号
-			clauses=(TextView) leaveANoteListViewHeader.findViewById(R.id.clauses);
-			money=(TextView) leaveANoteListViewHeader.findViewById(R.id.money);
+			listView=(ListView) leaveANoteListViewHeader.findViewById(R.id.listView1);
+			@SuppressWarnings("unchecked")
+			List<Income> dData=(List<Income>) consumeIncomeDb.select(2, data.getUid(), data.getDate()); 	
+			if(dData!=null&&dData.size()>0)
+			{
+				dAdapter=new IncomeAdapter(context, dData);
+				listView.setAdapter(dAdapter);
+				consumeIncomeDb.close();
+			}
 			
-			clauses.setText(data.getName());
-			money.setText("  "+data.getMoney()+"  ");
 			
 			leaveANoteButton=(Button) leaveANoteListViewHeader.findViewById(R.id.leave_a_note);
 			leaveANoteButton.setOnClickListener(l);
@@ -113,6 +125,33 @@ public class IncomeDetailActivity extends Activity {
 			leaveANoteListView.setAdapter(incomeCommentAdapter);			
 			//获取网络评论信息
 			handler.postDelayed(receiveCommentRunnable, 100);	
+			
+			//listView嵌套List的滚动
+			listView.setOnTouchListener(new OnTouchListener(){
+
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					int eventaction = event.getActionMasked();
+					int mPosX = 0,mPosY = 0;
+				    switch (eventaction ) {
+				          case MotionEvent.ACTION_DOWN: // touch down so check if the finger is on a ball
+				          mPosX = listView.getScrollX();
+				          mPosY = listView.getScrollY();
+				              break;
+				          case MotionEvent.ACTION_MOVE:   // touch drag with the ball
+				                 float ty1 = event.getY(0);
+				                 float ty2 = event.getY(1);
+				                 if (((ty2 - ty1) < 0) && (mPosY < listView.getCount())) {
+				                	 listView.scrollTo(mPosX, mPosY + 1);
+				                 }
+				                 else if (((ty2 - ty1) > 0)){
+				                	 listView.scrollTo(mPosX, mPosY -1);
+				                 }
+				           break;
+				          }
+				    return false;
+				}
+				});
 			
 		}else {//上传自己的页面显示
 			viewStub=(ViewStub) findViewById(R.id.uploadLayout);
@@ -518,5 +557,89 @@ public class IncomeDetailActivity extends Activity {
 				public TextView title;   //列表显示的单项
 			}
 		}
+		//收入列表显示的内部类
+		public class IncomeAdapter extends BaseAdapter {
 
+			private LayoutInflater inflater;
+			private List<Income> list;
+			
+			/**
+			 * 构造函数
+			 * @param context
+			 */
+			public IncomeAdapter(Context context,List<Income> datalist)
+			{
+				inflater=LayoutInflater.from(context);
+				this.list=datalist;
+			}
+			
+			@Override
+			public int getCount() {
+				// TODO Auto-generated method stub
+				return list.size();
+			}
+
+			@Override
+			public Object getItem(int position) {
+				// TODO Auto-generated method stub
+				return list.get(position);
+			}
+
+			@Override
+			public long getItemId(int position) {
+				// TODO Auto-generated method stub
+				return position;
+			}
+
+			@Override
+			public View getView(int position, View convertView, ViewGroup parent) {
+				 ViewHolder holder;        
+		         if (convertView == null) {
+		        	 
+			          convertView = inflater.inflate(R.layout.simple_list_item,null);	
+			          holder = new ViewHolder();
+			          
+			         /*获取Item组件*/                    
+			         holder.title = (TextView) convertView.findViewById(R.id.itemTitle);
+			         
+			         convertView.setTag(holder);//给holder设置tag                   
+		         }
+		         else
+		         {
+		             holder = (ViewHolder)convertView.getTag();//获取holder                
+		         }
+
+		         /*Item组件赋值
+		          * 显示的格式为： { xxx:  ￥xxx元 }
+		          * */            
+		         holder.title.setText(list.get(position).getName()+"   "+
+		                 getString(R.string.upload_consume_income_unit_char)+
+		                 list.get(position).getMoney()+
+		                 getString(R.string.upload_consume_income_unit));
+		         
+		         /**
+		          * 给Item附上样式
+		          */
+		         if (list.size() == 1) {
+		             convertView.setBackgroundResource(R.drawable.circle_list_single);
+		         } else if (list.size() > 1) {
+		             if (position == 0) {
+		                 convertView.setBackgroundResource(R.drawable.circle_list_top);
+		             } else if (position == (list.size() - 1)) {
+		                 convertView.setBackgroundResource(R.drawable.circle_list_bottom);
+		             } else {
+		                 convertView.setBackgroundResource(R.drawable.circle_list_middle);
+		             }
+		         }
+		           
+		         return convertView;
+		       }
+			
+			/**
+			 * 组件内部类
+			 * */
+			public final class ViewHolder{
+				public TextView title;   //列表显示的单项
+			}
+		}
 }
